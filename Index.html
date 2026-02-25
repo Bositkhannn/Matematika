@@ -2,474 +2,355 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>MathClass — O'quv Platformasi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MathClass</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   THEMES
-═══════════════════════════════════════════ */
-:root {
-  --bg: #0f172a;
-  --bg2: #1e293b;
-  --surface: #1e2d45;
-  --surface2: #243450;
-  --border: #2d4a6e;
-  --accent: #38bdf8;
-  --accent2: #0ea5e9;
-  --accentT: rgba(56,189,248,0.15);
-  --green: #22d3a0;
-  --red: #f87171;
-  --yellow: #fbbf24;
-  --text: #e2e8f0;
-  --muted: #64748b;
-  --muted2: #94a3b8;
-  --radius: 16px;
-  --shadow: 0 8px 32px rgba(0,0,0,0.3);
-  --font: 'Nunito', sans-serif;
-  --mono: 'JetBrains Mono', monospace;
+/* ═══════════════════════════ RESET & BASE ═══════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+button{cursor:pointer;font-family:'Nunito',sans-serif}
+input,textarea,select{font-family:'Nunito',sans-serif}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* ═══════════════════════════ THEMES ═══════════════════════════ */
+body{
+  --bg:#0f172a;--bg2:#1e293b;--surface:#1e2d45;--surface2:#243450;
+  --border:#2d4a6e;--accent:#38bdf8;--accentT:rgba(56,189,248,.15);
+  --green:#22d3a0;--red:#f87171;--yellow:#fbbf24;
+  --text:#e2e8f0;--muted:#94a3b8;
 }
+body[data-theme=ocean]{--bg:#0a1628;--bg2:#0f2040;--surface:#122447;--surface2:#163060;--border:#1e4080;--accent:#22d3ee;--accentT:rgba(34,211,238,.15);--muted:#7fb3c8}
+body[data-theme=forest]{--bg:#0a1a0e;--bg2:#0f2915;--surface:#133519;--surface2:#174020;--border:#235c2c;--accent:#4ade80;--accentT:rgba(74,222,128,.15);--green:#86efac;--muted:#86a98c}
+body[data-theme=sunset]{--bg:#1a0a0a;--bg2:#2a1010;--surface:#3a1515;--surface2:#451a1a;--border:#6b2525;--accent:#fb923c;--accentT:rgba(251,146,60,.15);--green:#4ade80;--muted:#a87060}
+body[data-theme=lavender]{--bg:#0d0b1e;--bg2:#15122e;--surface:#1c1840;--surface2:#231f50;--border:#352f7a;--accent:#a78bfa;--accentT:rgba(167,139,250,.15);--muted:#8b82b0}
+body[data-theme=light]{--bg:#f0f4ff;--bg2:#e2eaff;--surface:#fff;--surface2:#f0f4ff;--border:#c7d7f0;--accent:#3b82f6;--accentT:rgba(59,130,246,.12);--green:#059669;--red:#dc2626;--yellow:#d97706;--text:#1e293b;--muted:#64748b}
 
-[data-theme="ocean"] {
-  --bg: #0a1628; --bg2: #0f2040; --surface: #122447; --surface2: #163060;
-  --border: #1e4080; --accent: #22d3ee; --accent2: #06b6d4; --accentT: rgba(34,211,238,0.15);
-}
-[data-theme="forest"] {
-  --bg: #0a1a0e; --bg2: #0f2915; --surface: #133519; --surface2: #174020;
-  --border: #235c2c; --accent: #4ade80; --accent2: #22c55e; --accentT: rgba(74,222,128,0.15);
-  --green: #86efac;
-}
-[data-theme="sunset"] {
-  --bg: #1a0a0a; --bg2: #2a1010; --surface: #3a1515; --surface2: #451a1a;
-  --border: #6b2525; --accent: #fb923c; --accent2: #f97316; --accentT: rgba(251,146,60,0.15);
-  --green: #fb923c;
-}
-[data-theme="lavender"] {
-  --bg: #0d0b1e; --bg2: #15122e; --surface: #1c1840; --surface2: #231f50;
-  --border: #352f7a; --accent: #a78bfa; --accent2: #8b5cf6; --accentT: rgba(167,139,250,0.15);
-  --green: #c4b5fd;
-}
-[data-theme="light"] {
-  --bg: #f0f4ff; --bg2: #e8eeff; --surface: #ffffff; --surface2: #f0f4ff;
-  --border: #c7d7f0; --accent: #3b82f6; --accent2: #2563eb; --accentT: rgba(59,130,246,0.12);
-  --green: #059669; --red: #dc2626; --yellow: #d97706;
-  --text: #1e293b; --muted: #64748b; --muted2: #475569;
-  --shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
+/* ═══════════════════════════ SCREENS ═══════════════════════════ */
+.screen{display:none;min-height:100vh;flex-direction:column;background:var(--bg);color:var(--text)}
+.screen.active{display:flex}
+.centered{align-items:center;justify-content:center}
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html { scroll-behavior: smooth; }
-body { 
-  background: var(--bg); color: var(--text); font-family: var(--font);
-  min-height: 100vh; font-size: 16px; line-height: 1.5;
-  transition: background .3s, color .3s;
-}
+/* ═══════════════════════════ LANDING ═══════════════════════════ */
+#scr-landing{padding:2rem 1.5rem;gap:1.5rem;text-align:center;
+  background:radial-gradient(ellipse at 40% 20%,var(--surface) 0%,var(--bg) 60%)}
+.landing-emoji{font-size:3.5rem;animation:bob 2.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.landing-title{font-size:clamp(2rem,7vw,3.2rem);font-weight:900;letter-spacing:-1px}
+.landing-title span{color:var(--accent)}
+.landing-sub{color:var(--muted);font-size:.95rem;max-width:300px;margin:0 auto}
+.theme-dots{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
+.tdot{width:28px;height:28px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all .2s;flex-shrink:0}
+.tdot.active{border-color:var(--text);transform:scale(1.2)}
+.landing-btns{display:flex;flex-direction:column;gap:.85rem;width:100%;max-width:320px;margin:0 auto}
 
-/* ═══════ SCREENS ═══════ */
-.screen { display: none; min-height: 100vh; flex-direction: column; }
-.screen.active { display: flex; }
-.centered { align-items: center; justify-content: center; }
+/* ═══════════════════════════ FORM SCREEN ═══════════════════════════ */
+.form-screen{align-items:center;justify-content:center;padding:1.5rem;
+  background:radial-gradient(ellipse at 50% 0%,var(--surface) 0%,var(--bg) 70%)}
+.form-box{background:var(--surface);border:1px solid var(--border);border-radius:24px;
+  padding:2rem;width:100%;max-width:400px;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.form-icon{font-size:2.2rem;margin-bottom:.4rem}
+.form-title{font-size:1.5rem;font-weight:900;margin-bottom:.2rem}
+.form-sub{color:var(--muted);font-size:.9rem;margin-bottom:1.2rem}
 
-/* ═══════ SCROLLBAR ═══════ */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+/* ═══════════════════════════ TOGGLE TABS ═══════════════════════════ */
+.toggle-row{display:flex;gap:.4rem;background:var(--bg2);border-radius:10px;padding:.25rem;margin-bottom:1.2rem}
+.toggle-btn{flex:1;padding:.5rem;border:none;border-radius:8px;font-weight:800;font-size:.85rem;cursor:pointer;transition:all .2s;color:var(--muted);background:transparent}
+.toggle-btn.active{background:var(--accent);color:#000}
 
-/* ═══════ LANDING ═══════ */
-#screen-landing {
-  background: radial-gradient(ellipse at 30% 20%, var(--surface) 0%, var(--bg) 60%),
-              radial-gradient(ellipse at 80% 80%, var(--bg2) 0%, transparent 50%);
-  padding: 2rem 1.5rem; align-items: center; justify-content: center; text-align: center; gap: 2rem;
-}
-.landing-emoji { font-size: 4rem; animation: bounce 2s infinite; }
-@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-.landing-title { font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 900; letter-spacing: -1px; }
-.landing-title span { color: var(--accent); }
-.landing-subtitle { color: var(--muted2); font-size: 1rem; max-width: 320px; }
-.landing-btns { display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 320px; }
-.theme-row { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; margin-top: .5rem; }
-.theme-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all .2s; }
-.theme-dot.active { border-color: var(--text); transform: scale(1.2); }
-.theme-dot[data-t="default"] { background: linear-gradient(135deg, #1e2d45, #38bdf8); }
-.theme-dot[data-t="ocean"] { background: linear-gradient(135deg, #0a1628, #22d3ee); }
-.theme-dot[data-t="forest"] { background: linear-gradient(135deg, #0a1a0e, #4ade80); }
-.theme-dot[data-t="sunset"] { background: linear-gradient(135deg, #1a0a0a, #fb923c); }
-.theme-dot[data-t="lavender"] { background: linear-gradient(135deg, #0d0b1e, #a78bfa); }
-.theme-dot[data-t="light"] { background: linear-gradient(135deg, #e8eeff, #3b82f6); }
+/* ═══════════════════════════ INPUTS ═══════════════════════════ */
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:.78rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem}
+.field input,.field textarea,.field select{
+  width:100%;background:var(--bg2);border:2px solid var(--border);border-radius:12px;
+  color:var(--text);font-size:1rem;padding:.7rem 1rem;outline:none;transition:border-color .2s,box-shadow .2s;
+  appearance:none;-webkit-appearance:none}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accentT)}
+.field textarea{resize:vertical;min-height:80px}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2394a3b8' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem}
 
-/* ═══════ FORMS ═══════ */
-.form-wrap { align-items: center; justify-content: center; padding: 1.5rem;
-  background: radial-gradient(ellipse at 50% 0%, var(--surface) 0%, var(--bg) 70%); }
-.form-box { background: var(--surface); border: 1px solid var(--border); border-radius: 24px;
-  padding: 2rem; width: 100%; max-width: 400px; box-shadow: var(--shadow); }
-.form-icon { font-size: 2.5rem; margin-bottom: .5rem; }
-.form-title { font-size: 1.6rem; font-weight: 900; margin-bottom: .25rem; }
-.form-sub { color: var(--muted2); font-size: .9rem; margin-bottom: 1.5rem; }
+/* ═══════════════════════════ BUTTONS ═══════════════════════════ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.75rem 1.4rem;border-radius:12px;font-weight:800;font-size:.95rem;border:none;transition:all .2s;white-space:nowrap;text-decoration:none}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:var(--accent);color:#000}
+.btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn-danger{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.3)}
+.btn-danger:hover{background:rgba(248,113,113,.22)}
+.btn-success{background:rgba(34,211,160,.12);color:var(--green);border:1px solid rgba(34,211,160,.3)}
+.btn-full{width:100%}
+.btn-sm{padding:.4rem .85rem;font-size:.82rem;border-radius:8px}
+.btn-lg{padding:.95rem 2rem;font-size:1.05rem;border-radius:14px}
 
-/* ═══════ INPUTS ═══════ */
-.field { margin-bottom: 1rem; }
-.field label { display: block; font-size: .8rem; font-weight: 700; color: var(--muted2); 
-  text-transform: uppercase; letter-spacing: .06em; margin-bottom: .4rem; }
-input[type=text], input[type=password], input[type=number], input[type=email], textarea, select {
-  width: 100%; background: var(--bg2); border: 2px solid var(--border); border-radius: 12px;
-  color: var(--text); font-family: var(--font); font-size: 1rem; padding: .75rem 1rem;
-  outline: none; transition: border-color .2s, box-shadow .2s; appearance: none;
-}
-input:focus, textarea:focus, select:focus {
-  border-color: var(--accent); box-shadow: 0 0 0 4px var(--accentT);
-}
-textarea { resize: vertical; min-height: 80px; }
-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
+/* ═══════════════════════════ NAVBAR ═══════════════════════════ */
+.navbar{background:var(--surface);border-bottom:1px solid var(--border);padding:.75rem 1rem;display:flex;align-items:center;gap:.5rem;position:sticky;top:0;z-index:50}
+.navbar-brand{font-weight:900;font-size:1.1rem;color:var(--accent);flex:1}
+.navbar-info{font-size:.78rem;color:var(--muted);font-weight:700}
 
-/* ═══════ BUTTONS ═══════ */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
-  padding: .75rem 1.4rem; border-radius: 12px; font-family: var(--font);
-  font-weight: 800; font-size: .95rem; cursor: pointer; border: none;
-  transition: all .2s; text-decoration: none; white-space: nowrap; user-select: none;
-}
-.btn:active { transform: scale(.96); }
-.btn-primary { background: var(--accent); color: #000; }
-.btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
-.btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
-.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-.btn-danger { background: rgba(248,113,113,.15); color: var(--red); border: 1px solid rgba(248,113,113,.3); }
-.btn-danger:hover { background: rgba(248,113,113,.25); }
-.btn-success { background: rgba(34,211,160,.15); color: var(--green); border: 1px solid rgba(34,211,160,.3); }
-.btn-sm { padding: .45rem .9rem; font-size: .82rem; border-radius: 8px; }
-.btn-lg { padding: 1rem 2rem; font-size: 1.05rem; border-radius: 14px; }
-.btn-full { width: 100%; }
-.btn-icon { padding: .5rem; border-radius: 8px; width: 36px; height: 36px; }
+/* ═══════════════════════════ BOTTOM NAV ═══════════════════════════ */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;padding:.4rem .2rem calc(.4rem + env(safe-area-inset-bottom));z-index:50}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:.15rem;padding:.35rem .1rem;cursor:pointer;color:var(--muted);font-weight:800;font-size:.58rem;text-transform:uppercase;letter-spacing:.03em;transition:color .2s;border-radius:8px}
+.bnav-item.active{color:var(--accent)}
+.bnav-icon{font-size:1.2rem;transition:transform .2s}
+.bnav-item.active .bnav-icon{transform:scale(1.15)}
 
-/* ═══════ NAV ═══════ */
-.navbar {
-  background: var(--surface); border-bottom: 1px solid var(--border);
-  padding: .8rem 1rem; display: flex; align-items: center; gap: .75rem;
-  position: sticky; top: 0; z-index: 50;
-}
-.navbar-brand { font-weight: 900; font-size: 1.1rem; color: var(--accent); flex: 1; }
-.navbar-user { font-size: .8rem; color: var(--muted2); font-weight: 700; }
+/* ═══════════════════════════ MAIN CONTENT ═══════════════════════════ */
+.main{flex:1;padding:1rem;padding-bottom:5.5rem;overflow-y:auto;max-width:720px;width:100%;margin:0 auto;box-sizing:border-box}
+.tab-section{display:none}
+.tab-section.active{display:block}
+.page-title{font-size:1.2rem;font-weight:900;margin-bottom:1rem}
 
-/* ═══════ BOTTOM NAV (Mobile) ═══════ */
-.bottom-nav {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
-  background: var(--surface); border-top: 1px solid var(--border);
-  display: flex; padding: .5rem .25rem calc(.5rem + env(safe-area-inset-bottom));
-}
-.bnav-item { flex: 1; display: flex; flex-direction: column; align-items: center;
-  gap: .2rem; cursor: pointer; padding: .4rem; border-radius: 10px;
-  color: var(--muted); font-size: .65rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .04em; transition: all .2s; }
-.bnav-item.active { color: var(--accent); }
-.bnav-item .bnav-icon { font-size: 1.3rem; transition: transform .2s; }
-.bnav-item.active .bnav-icon { transform: scale(1.15); }
+/* ═══════════════════════════ CARDS ═══════════════════════════ */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.1rem;margin-bottom:.8rem;transition:border-color .2s}
+.card:hover{border-color:var(--accentT)}
+.card-row{display:flex;align-items:center;gap:.75rem}
+.card-info{flex:1;min-width:0}
+.card-title{font-weight:800;margin-bottom:.2rem;font-size:.95rem}
+.card-meta{font-size:.78rem;color:var(--muted)}
+.card-actions{display:flex;gap:.4rem;flex-shrink:0}
 
-/* ═══════ MAIN CONTENT ═══════ */
-.main { flex: 1; padding: 1rem; padding-bottom: 5rem; overflow-y: auto; }
-.section { display: none; }
-.section.active { display: block; }
+/* ═══════════════════════════ DAILY HERO ═══════════════════════════ */
+.daily-hero{background:linear-gradient(135deg,var(--surface),var(--surface2));border:2px solid var(--accent);border-radius:20px;padding:1.4rem;margin-bottom:1rem;position:relative;overflow:hidden}
+.daily-hero::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,var(--accentT) 0%,transparent 70%);border-radius:50%}
+.daily-done{border-color:var(--green)}
+.daily-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.3rem}
+.daily-done .daily-label{color:var(--green)}
+.daily-title{font-size:1.2rem;font-weight:900;margin-bottom:.3rem}
+.daily-sub{font-size:.85rem;color:var(--muted)}
+.daily-done-msg{color:var(--green);font-weight:800;margin-top:.75rem;font-size:.95rem}
 
-/* ═══════ CARDS ═══════ */
-.card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 1.2rem; margin-bottom: .85rem; transition: border-color .2s;
-}
-.card:hover { border-color: var(--accent); }
-.card-title { font-size: 1rem; font-weight: 800; margin-bottom: .25rem; }
-.card-meta { font-size: .78rem; color: var(--muted2); }
+/* ═══════════════════════════ QUESTION BLOCK ═══════════════════════════ */
+.q-block{background:var(--surface);border:2px solid var(--border);border-radius:18px;padding:1.2rem;margin-bottom:1rem}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--accent);margin-bottom:.5rem}
+.q-text{font-weight:700;font-size:1rem;line-height:1.6;margin-bottom:.85rem}
+.q-img{max-width:100%;border-radius:10px;margin-bottom:.85rem;display:block;border:1px solid var(--border)}
+.options-grid{display:grid;gap:.45rem}
+.opt-btn{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem;background:var(--bg2);border:2px solid var(--border);border-radius:12px;cursor:pointer;text-align:left;width:100%;color:var(--text);font-size:.95rem;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:600}
+.opt-btn:hover{border-color:var(--accent);background:var(--accentT)}
+.opt-btn.selected{border-color:var(--accent);background:var(--accentT)}
+.opt-btn.correct{border-color:var(--green);background:rgba(34,211,160,.1)}
+.opt-btn.wrong{border-color:var(--red);background:rgba(248,113,113,.1)}
+.opt-letter{width:30px;height:30px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0;color:var(--muted);transition:all .2s}
+.opt-btn.selected .opt-letter{background:var(--accent);color:#000}
+.opt-btn.correct .opt-letter{background:var(--green);color:#000}
+.opt-btn.wrong .opt-letter{background:var(--red);color:#fff}
 
-/* ═══════ HERO DAILY CARD ═══════ */
-.daily-hero {
-  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
-  border: 2px solid var(--accent); border-radius: 20px; padding: 1.5rem;
-  margin-bottom: 1.5rem; position: relative; overflow: hidden;
-}
-.daily-hero::before { content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px;
-  background: radial-gradient(circle, var(--accentT) 0%, transparent 70%); border-radius:50%; }
-.daily-hero-label { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); margin-bottom: .4rem; }
-.daily-hero-title { font-size: 1.3rem; font-weight: 900; margin-bottom: .3rem; }
-.daily-hero-sub { font-size: .85rem; color: var(--muted2); margin-bottom: 1rem; }
+/* ═══════════════════════════ PROGRESS BAR ═══════════════════════════ */
+.progress-wrap{margin-bottom:1rem}
+.progress-label{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);font-weight:700;margin-bottom:.4rem}
+.progress-bar{background:var(--bg2);border-radius:99px;height:8px;overflow:hidden}
+.progress-fill{height:100%;border-radius:99px;background:var(--accent);transition:width .4s cubic-bezier(.34,1.56,.64,1)}
 
-/* ═══════ QUESTION BLOCK ═══════ */
-.q-block {
-  background: var(--surface); border: 2px solid var(--border); border-radius: 18px;
-  padding: 1.3rem; margin-bottom: 1rem; transition: border-color .2s;
-}
-.q-num { font-family: var(--mono); font-size: .7rem; color: var(--accent); font-weight: 500; margin-bottom: .6rem; }
-.q-text { font-size: 1rem; font-weight: 700; line-height: 1.6; margin-bottom: .9rem; }
-.q-img { width: 100%; border-radius: 12px; margin-bottom: .9rem; border: 1px solid var(--border); display: block; }
-.options-grid { display: grid; gap: .5rem; }
-.option-btn {
-  display: flex; align-items: center; gap: .8rem; padding: .85rem 1rem;
-  background: var(--bg2); border: 2px solid var(--border); border-radius: 12px;
-  cursor: pointer; transition: all .2s; text-align: left; width: 100%;
-  font-family: var(--font); font-size: .95rem; color: var(--text);
-}
-.option-btn:hover { border-color: var(--accent); background: var(--accentT); }
-.option-btn.selected { border-color: var(--accent); background: var(--accentT); }
-.option-btn.correct { border-color: var(--green); background: rgba(34,211,160,.12); }
-.option-btn.wrong { border-color: var(--red); background: rgba(248,113,113,.12); }
-.option-letter {
-  width: 30px; height: 30px; border-radius: 8px; background: var(--surface2);
-  display: flex; align-items: center; justify-content: center; font-weight: 800;
-  font-size: .8rem; flex-shrink: 0; transition: all .2s;
-}
-.option-btn.selected .option-letter { background: var(--accent); color: #000; }
-.option-btn.correct .option-letter { background: var(--green); color: #000; }
-.option-btn.wrong .option-letter { background: var(--red); color: #fff; }
+/* ═══════════════════════════ TIMER ═══════════════════════════ */
+.timer{font-family:'JetBrains Mono',monospace;font-size:.9rem;background:var(--bg2);border:2px solid var(--border);border-radius:8px;padding:.3rem .7rem;transition:all .3s}
+.timer.warn{border-color:var(--yellow);color:var(--yellow)}
+.timer.danger{border-color:var(--red);color:var(--red);animation:pulse .6s infinite}
+@keyframes pulse{50%{opacity:.5}}
 
-/* ═══════ BADGES ═══════ */
-.badge {
-  display: inline-flex; align-items: center; gap: .3rem;
-  padding: .2rem .65rem; border-radius: 99px; font-size: .72rem; font-weight: 800;
-}
-.badge-green { background: rgba(34,211,160,.15); color: var(--green); }
-.badge-yellow { background: rgba(251,191,36,.15); color: var(--yellow); }
-.badge-red { background: rgba(248,113,113,.15); color: var(--red); }
-.badge-blue { background: var(--accentT); color: var(--accent); }
+/* ═══════════════════════════ RESULT ═══════════════════════════ */
+#scr-result{align-items:center;justify-content:center;padding:1.5rem;
+  background:radial-gradient(ellipse at 50% 0%,var(--surface) 0%,var(--bg) 70%)}
+.result-box{max-width:420px;width:100%;text-align:center}
+.score-circle{position:relative;width:150px;height:150px;margin:0 auto 1rem}
+.score-circle svg{transform:rotate(-90deg);width:150px;height:150px}
+.score-inner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.score-pct{font-size:2rem;font-weight:900;display:block}
+.score-lbl{font-size:.65rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.result-title{font-size:1.6rem;font-weight:900;margin-bottom:.4rem}
+.result-sub{color:var(--muted);margin-bottom:1.4rem;font-size:.9rem}
+.result-table{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:1.4rem;text-align:left}
+.rt-row{display:flex;justify-content:space-between;align-items:center;padding:.7rem 1rem;border-bottom:1px solid var(--border);font-size:.88rem}
+.rt-row:last-child{border-bottom:none}
+.rt-row span:first-child{color:var(--muted)}
+.rt-row span:last-child{font-weight:700}
 
-/* ═══════ SCORE RESULT ═══════ */
-.result-screen { align-items: center; justify-content: center; padding: 1.5rem;
-  background: radial-gradient(ellipse at 50% 0%, var(--surface) 0%, var(--bg) 70%); }
-.result-box { max-width: 420px; width: 100%; }
-.score-circle { position: relative; width: 150px; height: 150px; margin: 0 auto 1.5rem; }
-.score-circle svg { transform: rotate(-90deg); width: 150px; height: 150px; }
-.score-circle .score-text { position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
-.score-circle .score-pct { font-size: 2rem; font-weight: 900; display: block; }
-.score-circle .score-lbl { font-size: .7rem; color: var(--muted2); font-weight: 700; }
-.result-title { font-size: 1.8rem; font-weight: 900; text-align: center; margin-bottom: .5rem; }
-.result-sub { text-align: center; color: var(--muted2); margin-bottom: 1.5rem; }
-.result-table { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 1.5rem; }
-.rt-row { display: flex; justify-content: space-between; align-items: center; padding: .75rem 1rem; border-bottom: 1px solid var(--border); font-size: .9rem; }
-.rt-row:last-child { border-bottom: none; }
-.rt-row span:first-child { color: var(--muted2); }
-.rt-row span:last-child { font-weight: 700; }
+/* ═══════════════════════════ BADGES ═══════════════════════════ */
+.badge{display:inline-flex;align-items:center;padding:.15rem .55rem;border-radius:99px;font-size:.7rem;font-weight:800}
+.badge-green{background:rgba(34,211,160,.15);color:var(--green)}
+.badge-yellow{background:rgba(251,191,36,.15);color:var(--yellow)}
+.badge-red{background:rgba(248,113,113,.15);color:var(--red)}
+.badge-blue{background:var(--accentT);color:var(--accent)}
 
-/* ═══════ TEACHER PANEL ═══════ */
-.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; flex-wrap: wrap; gap: .5rem; }
-.page-title { font-size: 1.3rem; font-weight: 900; }
-.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; margin-bottom: 1.2rem; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
-.stat-num { font-size: 2rem; font-weight: 900; color: var(--accent); line-height: 1; }
-.stat-label { font-size: .75rem; color: var(--muted2); font-weight: 700; margin-top: .2rem; }
+/* ═══════════════════════════ STATS GRID ═══════════════════════════ */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem}
+@media(min-width:500px){.stats-grid{grid-template-columns:repeat(4,1fr)}}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1rem}
+.stat-num{font-size:1.9rem;font-weight:900;color:var(--accent);line-height:1}
+.stat-label{font-size:.72rem;color:var(--muted);font-weight:700;margin-top:.2rem}
 
-/* ═══════ WIZARD STEPS ═══════ */
-.wizard { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-.wizard-header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 1rem 1.2rem; }
-.wizard-title { font-size: 1rem; font-weight: 800; }
-.wizard-sub { font-size: .8rem; color: var(--muted2); margin-top: .1rem; }
-.wizard-body { padding: 1.2rem; }
-.wizard-step { display: none; }
-.wizard-step.active { display: block; }
-.step-indicator { display: flex; gap: .4rem; margin-bottom: 1.2rem; }
-.step-dot { height: 4px; flex: 1; border-radius: 99px; background: var(--border); transition: background .3s; }
-.step-dot.done { background: var(--accent); }
+/* ═══════════════════════════ FILTER PILLS ═══════════════════════════ */
+.filter-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.85rem}
+.filter-btn{padding:.35rem .8rem;border-radius:99px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-weight:700;font-size:.78rem;cursor:pointer;transition:all .2s}
+.filter-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
 
-/* ═══════ OPTIONS EDITOR ═══════ */
-.option-edit-row {
-  display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem;
-  background: var(--bg2); border: 2px solid var(--border); border-radius: 10px; padding: .5rem .6rem .5rem .8rem;
-  cursor: pointer; transition: border-color .2s;
-}
-.option-edit-row.is-correct { border-color: var(--green); background: rgba(34,211,160,.07); }
-.option-edit-input { flex: 1; background: transparent; border: none; color: var(--text); font-family: var(--font); font-size: .95rem; outline: none; }
-.correct-toggle { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--border); background: transparent; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .2s; font-size: .7rem; }
-.correct-toggle.active { background: var(--green); border-color: var(--green); color: #000; }
+/* ═══════════════════════════ QUESTION EDITOR ═══════════════════════════ */
+.step-dots{display:flex;gap:.4rem;margin-bottom:1.2rem}
+.step-dot{flex:1;height:4px;border-radius:99px;background:var(--border);transition:background .3s}
+.step-dot.done{background:var(--accent)}
+.opt-edit-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;background:var(--bg2);border:2px solid var(--border);border-radius:10px;padding:.5rem .6rem .5rem .8rem;transition:border-color .2s}
+.opt-edit-row.is-correct{border-color:var(--green);background:rgba(34,211,160,.07)}
+.opt-edit-input{flex:1;background:transparent;border:none;color:var(--text);font-size:.95rem;outline:none;font-family:'Nunito',sans-serif;font-weight:600}
+.opt-edit-input::placeholder{color:var(--muted)}
+.correct-btn{width:26px;height:26px;border-radius:50%;border:2px solid var(--border);background:transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;transition:all .2s;color:transparent}
+.correct-btn.active{background:var(--green);border-color:var(--green);color:#000}
+.remove-btn{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;flex-shrink:0;padding:.1rem .3rem}
+.remove-btn:hover{color:var(--red)}
 
-/* ═══════ DAILY BUILDER ═══════ */
-.q-picker { background: var(--bg2); border: 2px solid var(--border); border-radius: 12px; overflow: hidden; }
-.q-picker-item { display: flex; align-items: center; gap: .75rem; padding: .85rem 1rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .15s; }
-.q-picker-item:last-child { border-bottom: none; }
-.q-picker-item:hover { background: var(--accentT); }
-.q-picker-item.picked { background: var(--accentT); }
-.q-picker-item .pick-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: .7rem; transition: all .2s; }
-.q-picker-item.picked .pick-check { background: var(--accent); border-color: var(--accent); color: #000; }
-.q-picker-text { font-size: .88rem; font-weight: 600; flex: 1; }
-.q-picker-tag { font-size: .7rem; color: var(--muted2); }
+/* ═══════════════════════════ PICKER ═══════════════════════════ */
+.q-picker{background:var(--bg2);border:2px solid var(--border);border-radius:12px;overflow:hidden;max-height:280px;overflow-y:auto}
+.picker-item{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.picker-item:last-child{border-bottom:none}
+.picker-item:hover{background:var(--accentT)}
+.picker-item.picked{background:var(--accentT)}
+.pick-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.7rem;font-weight:800;transition:all .2s}
+.picker-item.picked .pick-check{background:var(--accent);border-color:var(--accent);color:#000}
+.picker-text{font-size:.88rem;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.picker-tag{font-size:.68rem;color:var(--muted);flex-shrink:0}
 
-/* ═══════ MODAL ═══════ */
-.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 200; align-items: flex-end; justify-content: center; padding: 0; }
-.overlay.open { display: flex; }
-@media (min-width: 600px) { .overlay { align-items: center; padding: 1rem; } }
-.modal { background: var(--surface); border-radius: 24px 24px 0 0; width: 100%; max-height: 92vh; overflow-y: auto; padding: 1.5rem; }
-@media (min-width: 600px) { .modal { border-radius: 24px; max-width: 520px; max-height: 85vh; } }
-.modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 99px; margin: 0 auto 1.2rem; }
-@media (min-width: 600px) { .modal-handle { display: none; } }
-.modal-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 1.2rem; }
+/* ═══════════════════════════ TAG CHIPS ═══════════════════════════ */
+.chip{display:inline-flex;align-items:center;gap:.3rem;background:var(--accentT);color:var(--accent);padding:.2rem .65rem;border-radius:99px;font-size:.78rem;font-weight:800;cursor:pointer;margin:.2rem .2rem 0 0}
+.chip-remove{font-size:.75rem;opacity:.7}
 
-/* ═══════ TIMER ═══════ */
-.timer-badge { background: var(--bg2); border: 2px solid var(--border); border-radius: 10px; padding: .3rem .75rem; font-family: var(--mono); font-size: .9rem; font-weight: 500; }
-.timer-badge.warn { border-color: var(--yellow); color: var(--yellow); }
-.timer-badge.danger { border-color: var(--red); color: var(--red); animation: pulse .6s infinite; }
-@keyframes pulse { 50% { opacity: .6; } }
+/* ═══════════════════════════ LEADERBOARD ═══════════════════════════ */
+.lb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1rem;margin-bottom:.75rem;display:flex;align-items:center;gap:.85rem}
+.lb-medal{font-size:1.6rem;min-width:2.2rem;text-align:center;flex-shrink:0}
+.lb-rank{font-size:1rem;font-weight:900;min-width:2.2rem;text-align:center;color:var(--muted);flex-shrink:0}
+.lb-card.top3{border-color:var(--accent)}
 
-/* ═══════ PROGRESS ═══════ */
-.progress-bar { background: var(--bg2); border-radius: 99px; height: 8px; overflow: hidden; margin: .75rem 0; }
-.progress-fill { height: 100%; border-radius: 99px; background: var(--accent); transition: width .5s cubic-bezier(.34,1.56,.64,1); }
+/* ═══════════════════════════ MODAL / DRAWER ═══════════════════════════ */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+@media(min-width:600px){.overlay{align-items:center;padding:1rem}}
+.drawer{background:var(--surface);border-radius:24px 24px 0 0;width:100%;max-height:92vh;overflow-y:auto;padding:1.5rem;position:relative}
+@media(min-width:600px){.drawer{border-radius:24px;max-width:520px;max-height:88vh}}
+.drawer-handle{width:40px;height:4px;background:var(--border);border-radius:99px;margin:0 auto 1.2rem}
+@media(min-width:600px){.drawer-handle{display:none}}
+.drawer-title{font-size:1.15rem;font-weight:900;margin-bottom:1.2rem}
 
-/* ═══════ TOAST ═══════ */
-.toast { position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%) translateY(30px); 
-  background: var(--surface2); border: 1px solid var(--border); color: var(--text);
-  padding: .75rem 1.2rem; border-radius: 12px; font-size: .9rem; font-weight: 700;
-  z-index: 999; opacity: 0; transition: all .3s; white-space: nowrap; pointer-events: none;
-  box-shadow: var(--shadow);
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.ok { border-color: var(--green); }
-.toast.err { border-color: var(--red); }
+/* ═══════════════════════════ TOAST ═══════════════════════════ */
+.toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:.7rem 1.2rem;border-radius:12px;font-size:.88rem;font-weight:700;z-index:999;pointer-events:none;opacity:0;transition:all .3s;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{border-color:var(--green)}
+.toast.err{border-color:var(--red)}
 
-/* ═══════ MISC ═══════ */
-.empty-state { text-align: center; padding: 3rem 1rem; }
-.empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: .7; }
-.empty-text { color: var(--muted2); font-weight: 700; }
-.divider { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
-.flex { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
-.flex-1 { flex: 1; }
-.text-accent { color: var(--accent); }
-.text-muted { color: var(--muted2); }
-.fw9 { font-weight: 900; }
-.mt1 { margin-top: 1rem; }
+/* ═══════════════════════════ EMPTY STATE ═══════════════════════════ */
+.empty{text-align:center;padding:3rem 1rem;opacity:.7}
+.empty-icon{font-size:2.8rem;margin-bottom:.75rem}
+.empty-text{font-weight:700;color:var(--muted);font-size:.95rem}
 
-/* ═══════ CONFETTI CANVAS ═══════ */
-#confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 998; }
-
-/* ═══════ RESPONSIVE ═══════ */
-@media (min-width: 768px) {
-  .stats-grid { grid-template-columns: repeat(4, 1fr); }
-  .main { padding: 1.5rem; max-width: 800px; margin: 0 auto; }
-}
+/* ═══════════════════════════ UTILITY ═══════════════════════════ */
+.flex{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.divider{border:none;border-top:1px solid var(--border);margin:1rem 0}
+.muted{color:var(--muted);font-size:.85rem}
+.green-info{background:rgba(34,211,160,.07);border:1px solid var(--green);border-radius:14px;padding:1rem;margin-bottom:1rem}
+.green-info-title{font-weight:800;color:var(--green);margin-bottom:.4rem}
+.green-info p{font-size:.82rem;color:var(--muted);line-height:1.7}
+.mono{font-family:'JetBrains Mono',monospace;color:var(--accent);font-size:.78rem}
 </style>
 </head>
 <body>
-<canvas id="confetti"></canvas>
+
+<!-- ═══════ TOAST ═══════ -->
 <div class="toast" id="toast"></div>
 
-<!-- ═══════════════════════════════════
+<!-- ══════════════════════════════════════════════
      LANDING
-════════════════════════════════════ -->
-<div class="screen active centered" id="screen-landing">
+══════════════════════════════════════════════ -->
+<div class="screen active centered" id="scr-landing">
   <div class="landing-emoji">📐</div>
-<h1 class="landing-title">Tashkent<span>Experiment</span></h1>
   <h1 class="landing-title">Math<span>Class</span></h1>
-  <p class="landing-subtitle">O'quvchilar uchun interaktiv matematika platformasi</p>
-  
-  <div class="theme-row">
-    <div class="theme-dot active" data-t="default" onclick="setTheme('default',this)" title="Ko'k"></div>
-    <div class="theme-dot" data-t="ocean" onclick="setTheme('ocean',this)" title="Okean"></div>
-    <div class="theme-dot" data-t="forest" onclick="setTheme('forest',this)" title="O'rmon"></div>
-    <div class="theme-dot" data-t="sunset" onclick="setTheme('sunset',this)" title="Quyosh botishi"></div>
-    <div class="theme-dot" data-t="lavender" onclick="setTheme('lavender',this)" title="Binafsha"></div>
-    <div class="theme-dot" data-t="light" onclick="setTheme('light',this)" title="Yorug'lik"></div>
-  </div>
-  
+  <p class="landing-sub">Interaktiv matematika platformasi</p>
+  <div class="theme-dots" id="theme-dots"></div>
   <div class="landing-btns">
-    <button class="btn btn-primary btn-lg btn-full" onclick="goto('screen-student-login')">
-      🎓 O'quvchi sifatida kirish
-    </button>
-    <button class="btn btn-ghost btn-lg btn-full" onclick="goto('screen-teacher-login')">
-      📐 O'qituvchi sifatida kirish
-    </button>
+    <button class="btn btn-primary btn-lg btn-full" onclick="goto('scr-student-login')">🎓 O'quvchi sifatida kirish</button>
+    <button class="btn btn-ghost btn-lg btn-full" onclick="goto('scr-teacher-login')">📐 O'qituvchi sifatida kirish</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════
-     STUDENT LOGIN
-════════════════════════════════════ -->
-<div class="screen form-wrap" id="screen-student-login">
+<!-- ══════════════════════════════════════════════
+     STUDENT LOGIN / REGISTER
+══════════════════════════════════════════════ -->
+<div class="screen form-screen" id="scr-student-login">
   <div class="form-box">
     <div class="form-icon">🎓</div>
-    <div class="form-title">Xush kelibsiz!</div>
-    <div class="form-sub">Ma'lumotlaringizni kiriting</div>
-    <div class="field"><label>To'liq ismingiz</label>
-      <input type="text" id="st-name" placeholder="Masalan: Ali Karimov" autocomplete="name">
+    <div class="form-title" id="sl-title">Xush kelibsiz!</div>
+    <div class="form-sub" id="sl-sub">Hisobingizga kiring</div>
+    <div class="toggle-row">
+      <button class="toggle-btn active" id="sl-tab-login" onclick="slMode('login')">Kirish</button>
+      <button class="toggle-btn" id="sl-tab-register" onclick="slMode('register')">Ro'yxatdan o'tish</button>
     </div>
-    <div class="field"><label>Sinfingiz</label>
-      <input type="text" id="st-grade" placeholder="Masalan: 7A, 8B, 9D" autocomplete="off" style="text-transform:uppercase">
-    </div>
-    <div class="field"><label>Sinf kodi</label>
-      <input type="text" id="st-code" placeholder="O'qituvchingizdan so'rang" autocomplete="off"
-        onkeydown="if(event.key==='Enter')doStudentLogin()">
-    </div>
-    <button class="btn btn-primary btn-full btn-lg" onclick="doStudentLogin()">Kirish →</button>
-    <div style="margin-top:.75rem">
-      <button class="btn btn-ghost btn-full" onclick="goto('screen-landing')">← Orqaga</button>
-    </div>
+    <div class="field"><label>To'liq ismingiz</label><input type="text" id="sl-name" placeholder="Ali Karimov" autocomplete="name"></div>
+    <div class="field"><label>Sinfingiz</label><input type="text" id="sl-grade" placeholder="7A, 8B, 9D..." oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="field"><label>Parol</label><input type="password" id="sl-pass" placeholder="Parolingiz"></div>
+    <div class="field" id="sl-pass2-wrap" style="display:none"><label>Parolni takrorlang</label><input type="password" id="sl-pass2" placeholder="Parolni qaytaring"></div>
+    <button class="btn btn-primary btn-full btn-lg" id="sl-btn" onclick="doStudentAuth()" style="margin-bottom:.6rem">Kirish →</button>
+    <button class="btn btn-ghost btn-full" onclick="goto('scr-landing')">← Orqaga</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════
+<!-- ══════════════════════════════════════════════
      TEACHER LOGIN
-════════════════════════════════════ -->
-<div class="screen form-wrap" id="screen-teacher-login">
+══════════════════════════════════════════════ -->
+<div class="screen form-screen" id="scr-teacher-login">
   <div class="form-box">
     <div class="form-icon">📐</div>
     <div class="form-title">O'qituvchi paneli</div>
     <div class="form-sub">Kirish uchun parolni kiriting</div>
-    <div class="field"><label>Parol</label>
-      <input type="password" id="t-pass" placeholder="Parolingiz"
-        onkeydown="if(event.key==='Enter')doTeacherLogin()">
-    </div>
-    <button class="btn btn-primary btn-full btn-lg" onclick="doTeacherLogin()">Kirish →</button>
-    <div style="margin-top:.75rem">
-      <button class="btn btn-ghost btn-full" onclick="goto('screen-landing')">← Orqaga</button>
-    </div>
-    <div class="divider"></div>
-    <p style="font-size:.8rem;color:var(--muted2)">Boshlang'ich parol: <span style="font-family:var(--mono);color:var(--accent)">teacher123</span></p>
+    <div class="field"><label>Parol</label><input type="password" id="tl-pass" placeholder="Parolingiz" onkeydown="if(event.key==='Enter')doTeacherLogin()"></div>
+    <button class="btn btn-primary btn-full btn-lg" onclick="doTeacherLogin()" style="margin-bottom:.6rem">Kirish →</button>
+    <button class="btn btn-ghost btn-full" onclick="goto('scr-landing')">← Orqaga</button>
+    <hr class="divider">
+    <p class="muted" style="font-size:.78rem">Boshlang'ich parol: <span class="mono">teacher123</span></p>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════
+<!-- ══════════════════════════════════════════════
      STUDENT DASHBOARD
-════════════════════════════════════ -->
-<div class="screen" id="screen-student">
+══════════════════════════════════════════════ -->
+<div class="screen" id="scr-student">
   <nav class="navbar">
     <div class="navbar-brand">📐 MathClass</div>
-    <div class="navbar-user" id="st-navname"></div>
-    <button class="btn btn-ghost btn-sm" onclick="goto('screen-landing')">Chiqish</button>
+    <div class="navbar-info" id="st-nav-info"></div>
+    <button class="btn btn-ghost btn-sm" onclick="doLogout()">Chiqish</button>
   </nav>
   <div class="main">
-    <div class="section active" id="st-sec-daily"><div id="st-daily-area"></div></div>
-    <div class="section" id="st-sec-tests"><div id="st-tests-area"></div></div>
-    <div class="section" id="st-sec-history"><div id="st-history-area"></div></div>
+    <div class="tab-section active" id="st-sec-daily"></div>
+    <div class="tab-section" id="st-sec-tests"></div>
+    <div class="tab-section" id="st-sec-history"></div>
   </div>
-  <nav class="bottom-nav">
-    <div class="bnav-item active" onclick="stTab('daily',this)">
-      <div class="bnav-icon">📅</div><div>Kunlik</div>
-    </div>
-    <div class="bnav-item" onclick="stTab('tests',this)">
-      <div class="bnav-icon">📋</div><div>Testlar</div>
-    </div>
-    <div class="bnav-item" onclick="stTab('history',this)">
-      <div class="bnav-icon">📊</div><div>Natijalar</div>
-    </div>
+  <nav class="bottom-nav" id="st-bnav">
+    <div class="bnav-item active" onclick="stTab('daily',this)"><div class="bnav-icon">📅</div><div>Kunlik</div></div>
+    <div class="bnav-item" onclick="stTab('tests',this)"><div class="bnav-icon">📋</div><div>Testlar</div></div>
+    <div class="bnav-item" onclick="stTab('history',this)"><div class="bnav-icon">📊</div><div>Natijalar</div></div>
   </nav>
 </div>
 
-<!-- ═══════════════════════════════════
-     TEST TAKING
-════════════════════════════════════ -->
-<div class="screen" id="screen-test">
+<!-- ══════════════════════════════════════════════
+     TEST SCREEN
+══════════════════════════════════════════════ -->
+<div class="screen" id="scr-test">
   <nav class="navbar">
-    <div class="navbar-brand flex-1" id="test-nav-title">Test</div>
-    <div class="timer-badge" id="test-timer" style="display:none">00:00</div>
-    <button class="btn btn-primary btn-sm" onclick="submitTest()">Yuborish →</button>
+    <div class="navbar-brand flex-1" id="test-nav-title" style="font-size:.95rem">Test</div>
+    <div class="timer" id="test-timer" style="display:none">00:00</div>
+    <button class="btn btn-primary btn-sm" style="margin-left:.3rem" onclick="submitTest()">Yuborish →</button>
   </nav>
-  <div class="main" id="test-body">
-    <div id="test-progress-wrap">
-      <div class="flex" style="justify-content:space-between;font-size:.8rem;color:var(--muted2);font-weight:700">
-        <span id="test-prog-label">Savol 0 / 0</span>
-        <span id="test-prog-pct">0%</span>
-      </div>
+  <div class="main">
+    <div class="progress-wrap">
+      <div class="progress-label"><span id="test-prog-txt">0/0</span><span id="test-prog-pct">0%</span></div>
       <div class="progress-bar"><div class="progress-fill" id="test-progress" style="width:0%"></div></div>
     </div>
     <div id="test-questions"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════
-     RESULT
-════════════════════════════════════ -->
-<div class="screen result-screen centered" id="screen-result">
+<!-- ══════════════════════════════════════════════
+     RESULT SCREEN
+══════════════════════════════════════════════ -->
+<div class="screen centered" id="scr-result">
   <div class="result-box">
     <div class="score-circle">
       <svg viewBox="0 0 150 150">
@@ -478,7 +359,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
           stroke-linecap="round" stroke-dasharray="408" stroke-dashoffset="408"
           id="score-arc" style="transition:stroke-dashoffset 1.5s cubic-bezier(.34,1.56,.64,1)"/>
       </svg>
-      <div class="score-text">
+      <div class="score-inner">
         <span class="score-pct" id="res-pct">0%</span>
         <span class="score-lbl">BALL</span>
       </div>
@@ -486,427 +367,509 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
     <div class="result-title" id="res-title">Ajoyib!</div>
     <div class="result-sub" id="res-sub"></div>
     <div class="result-table" id="res-table"></div>
-    <button class="btn btn-ghost btn-full btn-lg" onclick="goHome()">← Bosh sahifaga</button>
+    <button class="btn btn-ghost btn-full btn-lg" onclick="goto('scr-student');stTab('tests',document.querySelector('#st-bnav .bnav-item:nth-child(2)'))">← Bosh sahifaga</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════
+<!-- ══════════════════════════════════════════════
      TEACHER PANEL
-════════════════════════════════════ -->
-<div class="screen" id="screen-teacher">
+══════════════════════════════════════════════ -->
+<div class="screen" id="scr-teacher">
   <nav class="navbar">
     <div class="navbar-brand">📐 O'qituvchi</div>
-    <button class="btn btn-ghost btn-sm" onclick="goto('screen-landing')">Chiqish</button>
+    <button class="btn btn-ghost btn-sm" onclick="goto('scr-landing')">Chiqish</button>
   </nav>
   <div class="main">
-    <div class="section active" id="t-sec-overview"><div id="t-overview"></div></div>
-    <div class="section" id="t-sec-questions"><div id="t-questions"></div></div>
-    <div class="section" id="t-sec-tests"><div id="t-tests"></div></div>
-    <div class="section" id="t-sec-daily"><div id="t-daily"></div></div>
-    <div class="section" id="t-sec-results"><div id="t-results"></div></div>
-    <div class="section" id="t-sec-settings"><div id="t-settings"></div></div>
+    <div class="tab-section active" id="t-sec-overview"></div>
+    <div class="tab-section" id="t-sec-questions"></div>
+    <div class="tab-section" id="t-sec-tests"></div>
+    <div class="tab-section" id="t-sec-daily"></div>
+    <div class="tab-section" id="t-sec-codes"></div>
+    <div class="tab-section" id="t-sec-results"></div>
+    <div class="tab-section" id="t-sec-settings"></div>
   </div>
-  <nav class="bottom-nav">
+  <nav class="bottom-nav" id="t-bnav">
     <div class="bnav-item active" onclick="tTab('overview',this)"><div class="bnav-icon">📊</div><div>Asosiy</div></div>
     <div class="bnav-item" onclick="tTab('questions',this)"><div class="bnav-icon">❓</div><div>Savollar</div></div>
     <div class="bnav-item" onclick="tTab('tests',this)"><div class="bnav-icon">📋</div><div>Testlar</div></div>
     <div class="bnav-item" onclick="tTab('daily',this)"><div class="bnav-icon">📅</div><div>Kunlik</div></div>
+    <div class="bnav-item" onclick="tTab('codes',this)"><div class="bnav-icon">🔑</div><div>Kodlar</div></div>
     <div class="bnav-item" onclick="tTab('results',this)"><div class="bnav-icon">📨</div><div>Natija</div></div>
     <div class="bnav-item" onclick="tTab('settings',this)"><div class="bnav-icon">⚙️</div><div>Sozlama</div></div>
   </nav>
 </div>
 
-<!-- ═══════════════════════════════════
-     MODAL: ADD/EDIT QUESTION
-════════════════════════════════════ -->
-<div class="overlay" id="ov-question">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title" id="mq-title-label">Yangi savol qo'shish</div>
+<!-- ══════════════════════════════════════════════
+     DRAWER: ADD/EDIT QUESTION
+══════════════════════════════════════════════ -->
+<div class="overlay" id="ov-q" onclick="if(event.target===this)closeOv('ov-q')">
+  <div class="drawer">
+    <div class="drawer-handle"></div>
+    <div class="drawer-title" id="qd-title">Yangi savol qo'shish</div>
+    <div class="step-dots" id="qd-steps"></div>
 
-    <!-- Step indicator -->
-    <div class="step-indicator">
-      <div class="step-dot done" id="qstep-1"></div>
-      <div class="step-dot" id="qstep-2"></div>
-      <div class="step-dot" id="qstep-3"></div>
-    </div>
-
-    <!-- Step 1: Question text & image -->
-    <div class="wizard-step active" id="qwiz-1">
-      <div style="font-size:.9rem;font-weight:800;color:var(--muted2);margin-bottom:.75rem">1-qadam: Savol matnini kiriting</div>
-      <div class="field">
-        <label>Savol matni</label>
-        <textarea id="mq-text" rows="4" placeholder="Masalan: 7 × 8 nechiga teng?"></textarea>
+    <!-- Step 1 -->
+    <div id="qd-step1">
+      <p class="muted" style="margin-bottom:.85rem;font-size:.82rem">1-qadam: Savol matni va rasmini kiriting</p>
+      <div class="field"><label>Savol matni *</label><textarea id="qd-text" rows="3" placeholder="Masalan: 7 × 8 nechiga teng?"></textarea></div>
+      <div class="field"><label>Mavzu / Teg</label><input type="text" id="qd-tag" placeholder="Algebra, Geometriya..."></div>
+      <div class="field"><label>Rasm (ixtiyoriy)</label>
+        <input type="file" id="qd-img-file" accept="image/*" style="color:var(--muted);font-size:.85rem;padding:.4rem 0">
+        <img id="qd-img-preview" style="display:none;max-width:100%;border-radius:10px;margin-top:.5rem;border:1px solid var(--border)">
       </div>
-      <div class="field">
-        <label>Rasm (ixtiyoriy)</label>
-        <input type="file" id="mq-img-file" accept="image/*" style="padding:.5rem;color:var(--muted2)">
-        <img id="mq-img-preview" style="display:none;max-width:100%;border-radius:10px;margin-top:.5rem">
-      </div>
-      <div class="field">
-        <label>Mavzu / Teg (ixtiyoriy)</label>
-        <input type="text" id="mq-tag" placeholder="Masalan: Algebra, Geometriya">
-      </div>
-      <div class="flex" style="justify-content:flex-end;margin-top:1rem">
-        <button class="btn btn-ghost" onclick="closeOv('ov-question')">Bekor</button>
-        <button class="btn btn-primary" onclick="qwizNext(2)">Keyingi →</button>
-      </div>
-    </div>
-
-    <!-- Step 2: Options -->
-    <div class="wizard-step" id="qwiz-2">
-      <div style="font-size:.9rem;font-weight:800;color:var(--muted2);margin-bottom:.75rem">2-qadam: Javob variantlarini kiriting</div>
-      <p style="font-size:.82rem;color:var(--muted2);margin-bottom:.75rem">✅ belgisini bosib to'g'ri javobni belgilang</p>
-      <div id="mq-opts"></div>
-      <button class="btn btn-ghost btn-sm" onclick="addOptRow()" style="margin-top:.4rem">+ Variant qo'shish</button>
-      <div class="flex" style="justify-content:space-between;margin-top:1rem">
-        <button class="btn btn-ghost" onclick="qwizNext(1)">← Orqaga</button>
-        <button class="btn btn-primary" onclick="qwizNext(3)">Keyingi →</button>
-      </div>
-    </div>
-
-    <!-- Step 3: Preview & save -->
-    <div class="wizard-step" id="qwiz-3">
-      <div style="font-size:.9rem;font-weight:800;color:var(--muted2);margin-bottom:.75rem">3-qadam: Tekshirib saqlang</div>
-      <div id="mq-preview" style="background:var(--bg2);border-radius:12px;padding:1rem;margin-bottom:1rem"></div>
       <div class="flex" style="justify-content:space-between">
-        <button class="btn btn-ghost" onclick="qwizNext(2)">← Orqaga</button>
+        <button class="btn btn-ghost" onclick="closeOv('ov-q')">Bekor</button>
+        <button class="btn btn-primary" onclick="qStep(2)">Keyingi →</button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div id="qd-step2" style="display:none">
+      <p class="muted" style="margin-bottom:.85rem;font-size:.82rem">2-qadam: ✅ tugmasini bosib to'g'ri javobni belgilang</p>
+      <div id="qd-opts-container"></div>
+      <button class="btn btn-ghost btn-sm" onclick="addOptRow()" style="margin-bottom:1rem">+ Variant qo'shish</button>
+      <div class="flex" style="justify-content:space-between">
+        <button class="btn btn-ghost" onclick="qStep(1)">← Orqaga</button>
+        <button class="btn btn-primary" onclick="qStep(3)">Keyingi →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Preview -->
+    <div id="qd-step3" style="display:none">
+      <p class="muted" style="margin-bottom:.85rem;font-size:.82rem">3-qadam: Tekshirib saqlang</p>
+      <div id="qd-preview" style="background:var(--bg2);border-radius:12px;padding:1rem;margin-bottom:1rem"></div>
+      <div class="flex" style="justify-content:space-between">
+        <button class="btn btn-ghost" onclick="qStep(2)">← Orqaga</button>
         <button class="btn btn-primary" onclick="saveQuestion()">✓ Saqlash</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════
-     MODAL: CREATE TEST
-════════════════════════════════════ -->
-<div class="overlay" id="ov-test">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Yangi test yaratish</div>
+<!-- ══════════════════════════════════════════════
+     DRAWER: CREATE TEST
+══════════════════════════════════════════════ -->
+<div class="overlay" id="ov-test" onclick="if(event.target===this)closeOv('ov-test')">
+  <div class="drawer">
+    <div class="drawer-handle"></div>
+    <div class="drawer-title">Test yaratish</div>
+    <div class="field"><label>Test nomi *</label><input type="text" id="td-name" placeholder="Masalan: 3-bob tekshiruvi"></div>
+    <div class="field"><label>Vaqt chegarasi (daqiqa, 0 = chegarasiz)</label><input type="number" id="td-time" value="0" min="0"></div>
     <div class="field">
-      <label>Test nomi</label>
-      <input type="text" id="mt-name" placeholder="Masalan: 3-bob tekshiruvi">
+      <label>Sinf kategoriyasi</label>
+      <div class="toggle-row" style="margin-bottom:.5rem">
+        <button class="toggle-btn active" id="td-univ-btn" onclick="setUniversal('td',true)">🌍 Umumiy</button>
+        <button class="toggle-btn" id="td-spec-btn" onclick="setUniversal('td',false)">🎯 Aniq sinflar</button>
+      </div>
+      <div id="td-grades-wrap" style="display:none">
+        <div class="flex" style="margin-bottom:.5rem">
+          <input type="text" id="td-grade-input" placeholder="7A..." style="flex:1;background:var(--bg2);border:2px solid var(--border);border-radius:10px;color:var(--text);padding:.55rem .85rem;outline:none;font-size:.9rem" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter'){event.preventDefault();addGradeChip('td')}">
+          <button class="btn btn-ghost btn-sm" onclick="addGradeChip('td')">+</button>
+        </div>
+        <div id="td-chips" class="flex"></div>
+      </div>
     </div>
     <div class="field">
-      <label>Vaqt chegarasi (daqiqa, 0 = chegarasiz)</label>
-      <input type="number" id="mt-time" value="0" min="0" placeholder="0">
+      <label>Savollarni tanlang</label>
+      <div class="q-picker" id="td-picker"></div>
     </div>
-    <div class="field">
-      <label>Savollarni tanlang (✓ belgisi bilan belgilang)</label>
-      <div id="mt-qpicker" class="q-picker" style="max-height:280px;overflow-y:auto"></div>
-    </div>
-    <div class="flex" style="justify-content:space-between;margin-top:1rem">
+    <div class="flex" style="justify-content:space-between;margin-top:.5rem">
       <button class="btn btn-ghost" onclick="closeOv('ov-test')">Bekor</button>
       <button class="btn btn-primary" onclick="saveTest()">✓ Test yaratish</button>
     </div>
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════════
+     DRAWER: CREATE DAILY
+══════════════════════════════════════════════ -->
+<div class="overlay" id="ov-daily" onclick="if(event.target===this)closeOv('ov-daily')">
+  <div class="drawer">
+    <div class="drawer-handle"></div>
+    <div class="drawer-title">Kunlik topshiriq qo'shish</div>
+    <div class="field"><label>Topshiriq nomi *</label><input type="text" id="dd-name" placeholder="Bugungi arifmetika mashqi"></div>
+    <div class="field">
+      <label>Sinf kategoriyasi</label>
+      <div class="toggle-row" style="margin-bottom:.5rem">
+        <button class="toggle-btn active" id="dd-univ-btn" onclick="setUniversal('dd',true)">🌍 Umumiy</button>
+        <button class="toggle-btn" id="dd-spec-btn" onclick="setUniversal('dd',false)">🎯 Aniq sinflar</button>
+      </div>
+      <div id="dd-grades-wrap" style="display:none">
+        <div class="flex" style="margin-bottom:.5rem">
+          <input type="text" id="dd-grade-input" placeholder="7A..." style="flex:1;background:var(--bg2);border:2px solid var(--border);border-radius:10px;color:var(--text);padding:.55rem .85rem;outline:none;font-size:.9rem" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter'){event.preventDefault();addGradeChip('dd')}">
+          <button class="btn btn-ghost btn-sm" onclick="addGradeChip('dd')">+</button>
+        </div>
+        <div id="dd-chips" class="flex"></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Savollarni tanlang</label>
+      <div class="q-picker" id="dd-picker"></div>
+    </div>
+    <div class="flex" style="justify-content:space-between;margin-top:.5rem">
+      <button class="btn btn-ghost" onclick="closeOv('ov-daily')">Bekor</button>
+      <button class="btn btn-primary" onclick="saveDaily()">✓ Saqlash</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     DRAWER: ADD CLASS CODE
+══════════════════════════════════════════════ -->
+<div class="overlay" id="ov-code" onclick="if(event.target===this)closeOv('ov-code')">
+  <div class="drawer">
+    <div class="drawer-handle"></div>
+    <div class="drawer-title">Sinf kodi qo'shish</div>
+    <div class="field"><label>Sinf kodi *</label><input type="text" id="cd-code" placeholder="7A-2024, 8B-math..."></div>
+    <div class="field">
+      <label>Tur</label>
+      <div class="toggle-row" style="margin-bottom:.5rem">
+        <button class="toggle-btn active" id="cd-univ-btn" onclick="setUniversal('cd',true)">🌍 Umumiy (barcha uchun)</button>
+        <button class="toggle-btn" id="cd-spec-btn" onclick="setUniversal('cd',false)">🎯 Aniq sinflar</button>
+      </div>
+      <div id="cd-grades-wrap" style="display:none">
+        <div class="flex" style="margin-bottom:.5rem">
+          <input type="text" id="cd-grade-input" placeholder="7A..." style="flex:1;background:var(--bg2);border:2px solid var(--border);border-radius:10px;color:var(--text);padding:.55rem .85rem;outline:none;font-size:.9rem" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter'){event.preventDefault();addGradeChip('cd')}">
+          <button class="btn btn-ghost btn-sm" onclick="addGradeChip('cd')">+</button>
+        </div>
+        <div id="cd-chips" class="flex"></div>
+      </div>
+    </div>
+    <div class="flex" style="justify-content:space-between;margin-top:.5rem">
+      <button class="btn btn-ghost" onclick="closeOv('ov-code')">Bekor</button>
+      <button class="btn btn-primary" onclick="saveCode()">+ Kod qo'shish</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ════════════════════════════
-// DB
-// ════════════════════════════
-const DBKEY = 'mc_v3';
+'use strict';
+
+// ═══════════════════════════════════════════════════════
+// DB  (localStorage — works on any hosted HTML file)
+// ═══════════════════════════════════════════════════════
+const DB_KEY = 'mc4';
 let DB = {
-  questions: [], tests: [], dailyTask: null, results: [],
-  settings: { token: '', chatId: '', classCode: 'sinf2024', pass: 'teacher123', theme: 'default' }
+  questions: [], tests: [], dailyTasks: [], classCodes: [],
+  results: [], students: {},
+  settings: { pass:'teacher123', token:'', chatId:'', theme:'blue' }
 };
+
 function dbLoad() {
-  try { const r = localStorage.getItem(DBKEY); if (r) DB = JSON.parse(r); } catch(e) {}
+  try { const r = localStorage.getItem(DB_KEY); if (r) DB = JSON.parse(r); } catch(e) {}
 }
-function dbSave() { localStorage.setItem(DBKEY, JSON.stringify(DB)); }
+function dbSave() {
+  try { localStorage.setItem(DB_KEY, JSON.stringify(DB)); } catch(e) {}
+}
 dbLoad();
 
-// ════════════════════════════
-// THEME
-// ════════════════════════════
-function setTheme(t, el) {
-  document.documentElement.setAttribute('data-theme', t === 'default' ? '' : t);
-  document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
-  if (el) el.classList.add('active');
-  DB.settings.theme = t; dbSave();
+// Seed demo data on first run
+if (!DB.questions.length) {
+  DB.questions = [
+    {id:'q1',text:"7 × 8 nechiga teng?",opts:["48","56","54","64"],correct:1,img:null,tag:"Arifmetika"},
+    {id:'q2',text:"2x + 5 = 13. x = ?",opts:["3","4","5","6"],correct:1,img:null,tag:"Algebra"},
+    {id:'q3',text:"Radiusi 5 bo'lgan aylana yuzi (π≈3.14)",opts:["78.5","31.4","15.7","25"],correct:0,img:null,tag:"Geometriya"},
+    {id:'q4',text:"200 ning 15% i qancha?",opts:["25","30","35","40"],correct:1,img:null,tag:"Foizlar"},
+    {id:'q5',text:"√144 = ?",opts:["11","12","13","14"],correct:1,img:null,tag:"Arifmetika"},
+  ];
+  DB.tests = [{id:'t1',title:"Boshlang'ich test",qids:['q1','q2','q3','q4','q5'],time:10,isUniversal:true,grades:[]}];
+  DB.dailyTasks = [{id:'dt1',title:"Bugungi isitish",qids:['q1','q5'],isUniversal:true,grades:[]}];
+  DB.classCodes = [{code:'sinf2024',isUniversal:true,grades:[]}];
+  dbSave();
 }
-// apply saved theme
-(function() {
-  const t = DB.settings.theme || 'default';
-  if (t !== 'default') document.documentElement.setAttribute('data-theme', t);
-  const dot = document.querySelector(`.theme-dot[data-t="${t}"]`);
-  if (dot) { document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active')); dot.classList.add('active'); }
-})();
 
-// ════════════════════════════
-// NAV
-// ════════════════════════════
+// ═══════════════════════════════════════════════════════
+// THEMES
+// ═══════════════════════════════════════════════════════
+const THEMES = {
+  blue:     {label:"Ko'k",    bg:"#0f172a",accent:"#38bdf8"},
+  ocean:    {label:"Okean",   bg:"#0a1628",accent:"#22d3ee"},
+  forest:   {label:"O'rmon",  bg:"#0a1a0e",accent:"#4ade80"},
+  sunset:   {label:"Quyosh",  bg:"#1a0a0a",accent:"#fb923c"},
+  lavender: {label:"Binafsha",bg:"#0d0b1e",accent:"#a78bfa"},
+  light:    {label:"Yorug'",  bg:"#f0f4ff",accent:"#3b82f6"},
+};
+
+function applyTheme(key) {
+  document.body.setAttribute('data-theme', key === 'blue' ? '' : key);
+  DB.settings.theme = key; dbSave();
+  document.querySelectorAll('.tdot').forEach(d => d.classList.toggle('active', d.dataset.t === key));
+}
+
+function buildThemeDots() {
+  const wrap = document.getElementById('theme-dots');
+  wrap.innerHTML = Object.entries(THEMES).map(([k,v]) =>
+    `<button class="tdot${DB.settings.theme===k?' active':''}" data-t="${k}" title="${v.label}"
+      style="background:linear-gradient(135deg,${v.bg},${v.accent})"
+      onclick="applyTheme('${k}')"></button>`
+  ).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════
 function goto(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
 }
+
 function stTab(name, el) {
-  document.querySelectorAll('#screen-student .section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('#screen-student .bnav-item').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#scr-student .tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('#st-bnav .bnav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('st-sec-'+name).classList.add('active');
   el.classList.add('active');
-  renderStudent(name);
+  renderStudentSection(name);
 }
+
 function tTab(name, el) {
-  document.querySelectorAll('#screen-teacher .section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('#screen-teacher .bnav-item').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#scr-teacher .tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('#t-bnav .bnav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('t-sec-'+name).classList.add('active');
   el.classList.add('active');
-  renderTeacher(name);
+  renderTeacherSection(name);
 }
 
-// ════════════════════════════
-// AUTH
-// ════════════════════════════
+function openOv(id) { document.getElementById(id).classList.add('open'); }
+function closeOv(id) { document.getElementById(id).classList.remove('open'); }
+
+// ═══════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════
+let toastTimer;
+function toast(msg, type='ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'toast show '+type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// ═══════════════════════════════════════════════════════
+// CURRENT USER
+// ═══════════════════════════════════════════════════════
 let ME = null;
-function doStudentLogin() {
-  const name = document.getElementById('st-name').value.trim();
-  const grade = document.getElementById('st-grade').value.trim().toUpperCase();
-  const code = document.getElementById('st-code').value.trim();
-  if (!name) { toast('Ismingizni kiriting', 'err'); return; }
-  if (!grade) { toast('Sinfingizni tanlang', 'err'); return; }
-  if (code !== DB.settings.classCode) { toast("Noto'g'ri sinf kodi!", 'err'); return; }
-  ME = { name, grade };
-  document.getElementById('st-navname').textContent = '👤 ' + name + ' · ' + grade;
-  goto('screen-student');
-  renderStudent('daily');
-}
-function doTeacherLogin() {
-  const pass = document.getElementById('t-pass').value;
-  if (pass !== DB.settings.pass) { toast("Noto'g'ri parol", 'err'); return; }
-  goto('screen-teacher');
-  renderTeacher('overview');
-}
-function goHome() {
-  goto('screen-student');
-  stTab('daily', document.querySelector('#screen-student .bnav-item'));
+let slIsLogin = true;
+
+function slMode(mode) {
+  slIsLogin = mode === 'login';
+  document.getElementById('sl-title').textContent = slIsLogin ? 'Xush kelibsiz!' : "Ro'yxatdan o'tish";
+  document.getElementById('sl-sub').textContent = slIsLogin ? 'Hisobingizga kiring' : 'Yangi hisob yarating';
+  document.getElementById('sl-btn').textContent = slIsLogin ? 'Kirish →' : "Ro'yxatdan o'tish →";
+  document.getElementById('sl-tab-login').classList.toggle('active', slIsLogin);
+  document.getElementById('sl-tab-register').classList.toggle('active', !slIsLogin);
+  document.getElementById('sl-pass2-wrap').style.display = slIsLogin ? 'none' : '';
 }
 
-// ════════════════════════════
-// STUDENT RENDER
-// ════════════════════════════
-function renderStudent(sec) {
-  if (sec === 'daily') renderStDaily();
-  if (sec === 'tests') renderStTests();
-  if (sec === 'history') renderStHistory();
+async function doStudentAuth() {
+  const name = document.getElementById('sl-name').value.trim();
+  const grade = document.getElementById('sl-grade').value.trim().toUpperCase();
+  const pass = document.getElementById('sl-pass').value;
+  const pass2 = document.getElementById('sl-pass2').value;
+  if (!name) { toast("Ismingizni kiriting", 'err'); return; }
+  if (!grade) { toast("Sinfingizni kiriting", 'err'); return; }
+  if (!pass) { toast("Parol kiriting", 'err'); return; }
+
+  if (slIsLogin) {
+    const acc = DB.students[name.toLowerCase()];
+    if (!acc) { toast("Bunday o'quvchi topilmadi. Ro'yxatdan o'ting.", 'err'); return; }
+    if (acc.pass !== pass) { toast("Noto'g'ri parol!", 'err'); return; }
+    ME = { name: acc.name, grade: acc.grade };
+  } else {
+    if (pass !== pass2) { toast("Parollar mos kelmadi", 'err'); return; }
+    const key = name.toLowerCase();
+    if (DB.students[key]) { toast("Bu ism band! Kiring yoki boshqa ism tanlang.", 'err'); return; }
+    DB.students[key] = { name, grade, pass };
+    dbSave();
+    ME = { name, grade };
+    toast("Ro'yxatdan o'tildi! ✓");
+  }
+  document.getElementById('st-nav-info').textContent = '👤 ' + ME.name + ' · ' + ME.grade;
+  goto('scr-student');
+  // activate daily tab
+  const firstBnav = document.querySelector('#st-bnav .bnav-item');
+  stTab('daily', firstBnav);
+}
+
+function doTeacherLogin() {
+  const pass = document.getElementById('tl-pass').value;
+  if (pass !== DB.settings.pass) { toast("Noto'g'ri parol", 'err'); return; }
+  goto('scr-teacher');
+  const firstBnav = document.querySelector('#t-bnav .bnav-item');
+  tTab('overview', firstBnav);
+}
+
+function doLogout() { ME = null; goto('scr-landing'); }
+
+// ═══════════════════════════════════════════════════════
+// STUDENT SECTIONS
+// ═══════════════════════════════════════════════════════
+function renderStudentSection(name) {
+  if (name === 'daily') renderStDaily();
+  if (name === 'tests') renderStTests();
+  if (name === 'history') renderStHistory();
+}
+
+function getMyTests() {
+  return DB.tests.filter(t => t.isUniversal || (t.grades||[]).includes(ME.grade));
+}
+function getMyDaily() {
+  return DB.dailyTasks.filter(d => d.isUniversal || (d.grades||[]).includes(ME.grade));
+}
+function getMyResults() {
+  return DB.results.filter(r => r.student === ME.name && r.grade === ME.grade);
 }
 
 function renderStDaily() {
-  const area = document.getElementById('st-daily-area');
-  const dt = DB.dailyTask;
-  if (!dt || !dt.qids || !dt.qids.length) {
-    area.innerHTML = `<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">Bugun kunlik topshiriq yo'q.<br>Ertaga qaytib keling!</div></div>`;
-    return;
-  }
+  const el = document.getElementById('st-sec-daily');
+  const tasks = getMyDaily();
   const today = new Date().toDateString();
-  const done = DB.results.find(r => r.uid === ME.name + '_daily_' + today);
-  if (done) {
-    area.innerHTML = `
-      <div class="daily-hero">
-        <div class="daily-hero-label">✅ Bugungi topshiriq bajarildi!</div>
-        <div class="daily-hero-title">${dt.title || 'Kunlik mashq'}</div>
-        <div class="daily-hero-sub">Siz ${done.score}/${done.total} ball to'pladingiz. Ajoyib!</div>
-      </div>
-      <div class="card"><p class="text-muted">Ertaga yangi topshiriq bo'ladi. 🌟</p></div>`;
-    return;
-  }
-  const qs = dt.qids.map(id => DB.questions.find(q => q.id === id)).filter(Boolean);
-  area.innerHTML = `
-    <div class="daily-hero">
-      <div class="daily-hero-label">📅 Kunlik topshiriq</div>
-      <div class="daily-hero-title">${dt.title || 'Kunlik mashq'}</div>
-      <div class="daily-hero-sub">${qs.length} ta savol</div>
-    </div>
-    <div id="daily-qs"></div>
-    <button class="btn btn-primary btn-full btn-lg" style="margin-top:1rem" onclick="submitActivity('daily')">✓ Topshiriq yakunlash</button>`;
-  renderQs('daily-qs', dt.qids, 'daily');
+  if (!tasks.length) { el.innerHTML = emptyHTML('📅', "Bugun kunlik topshiriq yo'q"); return; }
+  el.innerHTML = tasks.map(dt => {
+    const qs = (dt.qids||[]).map(id=>DB.questions.find(q=>q.id===id)).filter(Boolean);
+    const done = DB.results.find(r => r.student===ME.name && r.grade===ME.grade && r.testId===dt.id && r.type==='daily' && new Date(r.timestamp).toDateString()===today);
+    return `<div class="daily-hero${done?' daily-done':''}">
+      <div class="daily-label">📅 KUNLIK TOPSHIRIQ</div>
+      <div class="daily-title">${esc(dt.title)}</div>
+      <div class="daily-sub">${qs.length} ta savol</div>
+      ${done
+        ? `<div class="daily-done-msg">✅ Bajarildi! Ball: ${done.score}/${done.total}</div>`
+        : `<button class="btn btn-primary" style="margin-top:.85rem;border-radius:10px" onclick="startActivity('${dt.id}','daily')">Boshlash →</button>`}
+    </div>`;
+  }).join('');
 }
 
 function renderStTests() {
-  const area = document.getElementById('st-tests-area');
-  if (!DB.tests.length) {
-    area.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">Hozircha test yo'q.</div></div>`;
-    return;
-  }
-  area.innerHTML = '<div class="page-header"><div class="page-title">Testlar</div></div>' +
-    DB.tests.map(t => {
-      const done = DB.results.find(r => r.uid === ME.name + '_test_' + t.id);
-      return `<div class="card">
-        <div class="flex">
-          <div class="flex-1">
-            <div class="card-title">${t.title}</div>
-            <div class="card-meta">${t.qids.length} ta savol${t.time ? ' · ⏱ ' + t.time + ' daqiqa' : ''}</div>
-          </div>
-          ${done
-            ? `<span class="badge ${gradeBadge(done.score,done.total)}">✓ ${done.score}/${done.total}</span>`
-            : `<button class="btn btn-primary btn-sm" onclick="startTest('${t.id}')">Boshlash →</button>`}
-        </div>
-      </div>`;
-    }).join('');
+  const el = document.getElementById('st-sec-tests');
+  const tests = getMyTests();
+  const myR = getMyResults();
+  if (!tests.length) { el.innerHTML = emptyHTML('📋', "Hozircha test yo'q"); return; }
+  el.innerHTML = `<div class="page-title">Testlar</div>` + tests.map(t => {
+    const done = myR.find(r => r.testId===t.id && r.type!=='daily');
+    const qs = (t.qids||[]).map(id=>DB.questions.find(q=>q.id===id)).filter(Boolean);
+    const pct = done ? Math.round(done.score/done.total*100) : 0;
+    return `<div class="card"><div class="card-row">
+      <div class="card-info">
+        <div class="card-title">${esc(t.title)}</div>
+        <div class="card-meta">${qs.length} ta savol${t.time?` · ⏱ ${t.time} daqiqa`:''}</div>
+      </div>
+      ${done
+        ? `<span class="badge ${gradeBadge(done.score,done.total)}">✓ ${done.score}/${done.total}</span>`
+        : `<button class="btn btn-primary btn-sm" onclick="startActivity('${t.id}','test')">Boshlash →</button>`}
+    </div></div>`;
+  }).join('');
 }
 
 function renderStHistory() {
-  const area = document.getElementById('st-history-area');
-  const mine = DB.results.filter(r => r.student === ME.name).reverse();
-  if (!mine.length) {
-    area.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">Hozircha natijalari yo'q.</div></div>`;
-    return;
-  }
-  area.innerHTML = '<div class="page-header"><div class="page-title">Mening natijalarim</div></div>' +
+  const el = document.getElementById('st-sec-history');
+  const mine = getMyResults().reverse();
+  if (!mine.length) { el.innerHTML = emptyHTML('📊', "Hozircha natija yo'q"); return; }
+  el.innerHTML = `<div class="page-title">Mening natijalarim</div>` +
     mine.map(r => {
       const pct = Math.round(r.score/r.total*100);
-      return `<div class="card"><div class="flex">
-        <div class="flex-1">
-          <div class="card-title">${r.title}</div>
-          <div class="card-meta">${r.date}</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-weight:900;font-size:1.2rem">${r.score}/${r.total}</div>
+      return `<div class="card"><div class="card-row">
+        <div class="card-info"><div class="card-title">${esc(r.title)}</div><div class="card-meta">${r.date}</div></div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-weight:900;font-size:1.1rem">${r.score}/${r.total}</div>
           <span class="badge ${gradeBadge(r.score,r.total)}">${pct}%</span>
         </div>
       </div></div>`;
     }).join('');
 }
 
-// ════════════════════════════
-// QUESTION RENDERING
-// ════════════════════════════
-let answers = {};
-function renderQs(containerId, qids, mode) {
-  answers = {};
-  const qs = qids.map(id => DB.questions.find(q => q.id === id)).filter(Boolean);
-  const c = document.getElementById(containerId);
-  if (!c) return;
-  c.innerHTML = qs.map((q, i) => `
-    <div class="q-block">
-      <div class="q-num">SAVOL ${i+1}${q.tag ? ' · ' + q.tag : ''}</div>
-      <div class="q-text">${q.text}</div>
-      ${q.img ? `<img class="q-img" src="${q.img}">` : ''}
-      <div class="options-grid">
-        ${q.opts.map((o, j) => `
-          <button class="option-btn" id="opt_${mode}_${q.id}_${j}" onclick="pickOpt('${mode}','${q.id}',${j},${q.opts.length})">
-            <span class="option-letter">${'ABCD'[j]}</span>
-            <span>${o}</span>
-          </button>`).join('')}
-      </div>
-    </div>`).join('');
-  updateTestProgress(qids);
-}
-
-function pickOpt(mode, qid, idx, count) {
-  for(let j=0;j<count;j++) {
-    const el = document.getElementById(`opt_${mode}_${qid}_${j}`);
-    if(el) el.classList.remove('selected');
-  }
-  const sel = document.getElementById(`opt_${mode}_${qid}_${idx}`);
-  if(sel) sel.classList.add('selected');
-  answers[qid] = idx;
-  updateTestProgress(activeTestQids);
-}
-
-let activeTestQids = [];
-function updateTestProgress(qids) {
-  if (!qids || !qids.length) return;
-  const answered = qids.filter(id => answers[id] !== undefined).length;
-  const pct = Math.round(answered / qids.length * 100);
-  const pb = document.getElementById('test-progress');
-  const pl = document.getElementById('test-prog-label');
-  const pp = document.getElementById('test-prog-pct');
-  if (pb) pb.style.width = pct + '%';
-  if (pl) pl.textContent = `Savol ${answered} / ${qids.length}`;
-  if (pp) pp.textContent = pct + '%';
-}
-
-// ════════════════════════════
-// TAKE TEST
-// ════════════════════════════
-let activeTest = null;
+// ═══════════════════════════════════════════════════════
+// TEST ENGINE
+// ═══════════════════════════════════════════════════════
+let activeTestObj = null;
+let testAnswers = {};
 let timerInt = null;
 let timerSec = 0;
 
-function startTest(tid) {
-  const t = DB.tests.find(x => x.id === tid);
-  if (!t) return;
-  activeTest = t;
-  activeTestQids = t.qids;
-  answers = {};
-  document.getElementById('test-nav-title').textContent = t.title;
-  document.getElementById('test-progress-wrap').style.display = 'block';
-  
-  const tbody = document.getElementById('test-questions');
-  const qs = t.qids.map(id => DB.questions.find(q => q.id === id)).filter(Boolean);
-  tbody.innerHTML = qs.map((q,i) => `
-    <div class="q-block">
-      <div class="q-num">SAVOL ${i+1}${q.tag?' · '+q.tag:''}</div>
-      <div class="q-text">${q.text}</div>
-      ${q.img?`<img class="q-img" src="${q.img}">`:''}
-      <div class="options-grid">
-        ${q.opts.map((o,j)=>`
-          <button class="option-btn" id="opt_test_${q.id}_${j}" onclick="pickOpt('test','${q.id}',${j},${q.opts.length})">
-            <span class="option-letter">${'ABCD'[j]}</span><span>${o}</span>
-          </button>`).join('')}
-      </div>
-    </div>`).join('') + '<div style="height:1rem"></div>';
-  
-  updateTestProgress(t.qids);
-  
+function startActivity(id, type) {
+  const obj = type === 'daily'
+    ? DB.dailyTasks.find(d=>d.id===id)
+    : DB.tests.find(t=>t.id===id);
+  if (!obj) return;
+  activeTestObj = { ...obj, type };
+  testAnswers = {};
   clearInterval(timerInt);
-  if (t.time > 0) {
-    timerSec = t.time * 60;
-    document.getElementById('test-timer').style.display = 'block';
-    updateTimerUI();
+
+  // Build questions
+  const qs = (obj.qids||[]).map(id=>DB.questions.find(q=>q.id===id)).filter(Boolean);
+  document.getElementById('test-nav-title').textContent = obj.title;
+  document.getElementById('test-questions').innerHTML = qs.map((q,i) => buildQBlock(q,i)).join('');
+  updateTestProgress(qs.length);
+
+  // Timer
+  const timerEl = document.getElementById('test-timer');
+  if (obj.time > 0) {
+    timerSec = obj.time * 60;
+    timerEl.style.display = '';
+    updateTimerDisplay();
     timerInt = setInterval(() => {
       timerSec--;
-      updateTimerUI();
+      updateTimerDisplay();
       if (timerSec <= 0) { clearInterval(timerInt); submitTest(); }
     }, 1000);
   } else {
-    document.getElementById('test-timer').style.display = 'none';
+    timerEl.style.display = 'none';
   }
-  goto('screen-test');
+  goto('scr-test');
 }
 
-function updateTimerUI() {
+function buildQBlock(q, i) {
+  return `<div class="q-block">
+    <div class="q-num">SAVOL ${i+1}${q.tag ? ' · '+esc(q.tag) : ''}</div>
+    <div class="q-text">${esc(q.text)}</div>
+    ${q.img ? `<img class="q-img" src="${q.img}" alt="">` : ''}
+    <div class="options-grid">
+      ${q.opts.map((o,j) => `<button class="opt-btn" id="opt_${q.id}_${j}" onclick="pickAnswer('${q.id}',${j},${q.opts.length})">
+        <span class="opt-letter">${'ABCD'[j]}</span><span>${esc(o)}</span>
+      </button>`).join('')}
+    </div>
+  </div>`;
+}
+
+function pickAnswer(qid, idx, count) {
+  for (let j=0; j<count; j++) {
+    const el = document.getElementById(`opt_${qid}_${j}`);
+    if (el) { el.classList.remove('selected'); el.querySelector('.opt-letter').classList.remove('selected'); }
+  }
+  const sel = document.getElementById(`opt_${qid}_${idx}`);
+  if (sel) sel.classList.add('selected');
+  testAnswers[qid] = idx;
+  const qs = (activeTestObj.qids||[]);
+  updateTestProgress(qs.length);
+}
+
+function updateTestProgress(total) {
+  const answered = Object.keys(testAnswers).length;
+  const pct = total ? Math.round(answered/total*100) : 0;
+  document.getElementById('test-prog-txt').textContent = `Javob berildi: ${answered}/${total}`;
+  document.getElementById('test-prog-pct').textContent = pct+'%';
+  document.getElementById('test-progress').style.width = pct+'%';
+}
+
+function updateTimerDisplay() {
   const m = String(Math.floor(timerSec/60)).padStart(2,'0');
   const s = String(timerSec%60).padStart(2,'0');
   const el = document.getElementById('test-timer');
   el.textContent = `${m}:${s}`;
-  el.className = 'timer-badge' + (timerSec<30?' danger':timerSec<60?' warn':'');
+  el.className = 'timer' + (timerSec<30?' danger':timerSec<60?' warn':'');
 }
 
 function submitTest() {
   clearInterval(timerInt);
-  const t = activeTest;
-  if (!t) return;
-  const qs = t.qids.map(id => DB.questions.find(q => q.id === id)).filter(Boolean);
+  const obj = activeTestObj;
+  if (!obj) return;
+  const qs = (obj.qids||[]).map(id=>DB.questions.find(q=>q.id===id)).filter(Boolean);
   let score = 0;
-  qs.forEach(q => { if (answers[q.id] !== undefined && answers[q.id] === q.correct) score++; });
-  const res = {
-    uid: ME.name + '_test_' + t.id,
-    id: Date.now()+"", student: ME.name, grade: ME.grade,
-    title: t.title, type: 'test', testId: t.id,
-    score, total: qs.length,
-    date: new Date().toLocaleString('uz-UZ'),
-    timestamp: new Date().toISOString()
-  };
-  DB.results.push(res); dbSave();
-  sendTG(res);
-  showResult(res);
-}
-
-function submitActivity(type) {
-  const dt = DB.dailyTask;
-  const qs = dt.qids.map(id => DB.questions.find(q => q.id === id)).filter(Boolean);
-  let score = 0;
-  qs.forEach(q => { if (answers[q.id] !== undefined && answers[q.id] === q.correct) score++; });
+  qs.forEach(q => { if (testAnswers[q.id] !== undefined && testAnswers[q.id] === q.correct) score++; });
   const today = new Date().toDateString();
+  const uid = `${ME.name}_${obj.id}_${obj.type==='daily'?today:'once'}`;
+  if (DB.results.find(r=>r.uid===uid)) { toast("Bu testni allaqachon topshirgansiz!", 'err'); goto('scr-student'); return; }
   const res = {
-    uid: ME.name + '_daily_' + today,
-    id: Date.now()+"", student: ME.name, grade: ME.grade,
-    title: dt.title || 'Kunlik mashq', type: 'daily',
+    uid, id: Date.now()+'', student: ME.name, grade: ME.grade,
+    title: obj.title, type: obj.type, testId: obj.id,
     score, total: qs.length,
     date: new Date().toLocaleString('uz-UZ'),
     timestamp: new Date().toISOString()
@@ -916,539 +879,640 @@ function submitActivity(type) {
   showResult(res);
 }
 
-// ════════════════════════════
-// RESULT
-// ════════════════════════════
+// ═══════════════════════════════════════════════════════
+// RESULT SCREEN
+// ═══════════════════════════════════════════════════════
 function showResult(res) {
-  const pct = Math.round(res.score / res.total * 100);
+  const pct = Math.round(res.score/res.total*100);
   const arc = document.getElementById('score-arc');
-  const circumference = 408;
-  arc.style.stroke = pct>=80 ? 'var(--green)' : pct>=50 ? 'var(--yellow)' : 'var(--red)';
-  setTimeout(() => {
-    arc.style.strokeDashoffset = circumference - (circumference * pct / 100);
-  }, 100);
-  document.getElementById('res-pct').textContent = pct + '%';
-  
-  const msgs = [
-    [90, '🏆 Zo\'r! A\'lo natija!'],
-    [70, '⭐ Yaxshi natija!'],
-    [50, '👍 Davom eting!'],
-    [0,  '💪 Harakat qiling!']
-  ];
-  document.getElementById('res-title').textContent = msgs.find(m => pct >= m[0])[1];
+  const arcColor = pct>=80?'var(--green)':pct>=50?'var(--yellow)':'var(--red)';
+  arc.style.stroke = arcColor;
+  setTimeout(() => { arc.style.strokeDashoffset = 408 - 408*pct/100; }, 80);
+  document.getElementById('res-pct').textContent = pct+'%';
+  const title = pct>=90?"🏆 Zo'r! A'lo natija!":pct>=70?"⭐ Yaxshi natija!":pct>=50?"👍 Davom eting!":"💪 Harakat qiling!";
+  document.getElementById('res-title').textContent = title;
   document.getElementById('res-sub').textContent = `${res.total} savoldan ${res.score} tasiga to'g'ri javob berdingiz`;
-  document.getElementById('res-table').innerHTML = `
-    <div class="rt-row"><span>Topshiriq</span><span>${res.title}</span></div>
-    <div class="rt-row"><span>Ball</span><span>${res.score} / ${res.total}</span></div>
-    <div class="rt-row"><span>Foiz</span><span>${pct}%</span></div>
-    <div class="rt-row"><span>Sana</span><span>${res.date}</span></div>
-    <div class="rt-row"><span>Holat</span><span><span class="badge ${gradeBadge(res.score,res.total)}">${pct>=60?'O\'tdi':'Qoldi'}</span></span></div>`;
-  goto('screen-result');
-  if (pct >= 70) launchConfetti();
+  document.getElementById('res-table').innerHTML = [
+    ['Topshiriq', esc(res.title)],
+    ['Ball', `${res.score} / ${res.total}`],
+    ['Foiz', `${pct}%`],
+    ['Sinf', esc(res.grade)],
+    ['Sana', esc(res.date)],
+    ['Holat', `<span class="badge ${gradeBadge(res.score,res.total)}">${pct>=60?"O'tdi":"Qoldi"}</span>`]
+  ].map(([k,v]) => `<div class="rt-row"><span>${k}</span><span>${v}</span></div>`).join('');
+  goto('scr-result');
 }
 
-// ════════════════════════════
-// TEACHER RENDER
-// ════════════════════════════
-function renderTeacher(sec) {
-  if (sec === 'overview') renderTOverview();
-  if (sec === 'questions') renderTQuestions();
-  if (sec === 'tests') renderTTests();
-  if (sec === 'daily') renderTDaily();
-  if (sec === 'results') renderTResults();
-  if (sec === 'settings') renderTSettings();
+// ═══════════════════════════════════════════════════════
+// TELEGRAM
+// ═══════════════════════════════════════════════════════
+async function sendTG(res) {
+  const {token, chatId} = DB.settings;
+  if (!token || !chatId) return;
+  const pct = Math.round(res.score/res.total*100);
+  const e = pct>=80?'⭐':pct>=60?'✅':'⚠️';
+  const msg = `${e} <b>Yangi natija!</b>\n\n👤 <b>O'quvchi:</b> ${res.student}\n🏫 <b>Sinf:</b> ${res.grade}\n📝 <b>Topshiriq:</b> ${res.title}\n🔢 <b>Ball:</b> ${res.score}/${res.total} (${pct}%)\n📅 <b>Sana:</b> ${res.date}`;
+  try { await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,text:msg,parse_mode:'HTML'})}); } catch {}
 }
 
+// ═══════════════════════════════════════════════════════
+// TEACHER SECTIONS
+// ═══════════════════════════════════════════════════════
+function renderTeacherSection(name) {
+  if (name==='overview')  renderTOverview();
+  if (name==='questions') renderTQuestions();
+  if (name==='tests')     renderTTests();
+  if (name==='daily')     renderTDaily();
+  if (name==='codes')     renderTCodes();
+  if (name==='results')   renderTResults();
+  if (name==='settings')  renderTSettings();
+}
+
+// OVERVIEW
 function renderTOverview() {
-  const students = [...new Set(DB.results.map(r => r.student))].length;
-  const avgScore = DB.results.length
-    ? Math.round(DB.results.reduce((a,r) => a + r.score/r.total*100, 0) / DB.results.length)
-    : 0;
-  document.getElementById('t-overview').innerHTML = `
-    <div class="page-title" style="margin-bottom:1rem">Umumiy ko'rinish</div>
+  const allGrades = [...new Set(DB.results.map(r=>r.grade))].filter(Boolean).sort();
+  const el = document.getElementById('t-sec-overview');
+  const students = [...new Set(DB.results.map(r=>r.student))].length;
+  const avg = DB.results.length ? Math.round(DB.results.reduce((a,r)=>a+r.score/r.total*100,0)/DB.results.length) : 0;
+  el.innerHTML = `
+    <div class="page-title">Umumiy ko'rinish</div>
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-num">${DB.questions.length}</div><div class="stat-label">Savollar</div></div>
       <div class="stat-card"><div class="stat-num">${DB.tests.length}</div><div class="stat-label">Testlar</div></div>
       <div class="stat-card"><div class="stat-num">${DB.results.length}</div><div class="stat-label">Topshirishlar</div></div>
       <div class="stat-card"><div class="stat-num">${students}</div><div class="stat-label">O'quvchilar</div></div>
     </div>
-    ${DB.results.length ? `<div class="card"><div class="card-title">O'rtacha ball</div><div class="progress-bar"><div class="progress-fill" style="width:${avgScore}%"></div></div><div style="font-size:1.2rem;font-weight:900;color:var(--accent)">${avgScore}%</div></div>` : ''}
-    <div class="page-title" style="margin:1rem 0 .75rem">So'nggi natijalar</div>
-    ${DB.results.length === 0 ? `<div class="empty-state"><div class="empty-icon">📨</div><div class="empty-text">Hozircha natija yo'q</div></div>` :
-    [...DB.results].reverse().slice(0,8).map(r => `
-      <div class="card"><div class="flex">
-        <div class="flex-1"><div class="card-title">${r.student}${r.grade ? ` <span class="badge badge-blue">${r.grade}</span>` : ''}</div><div class="card-meta">${r.title} · ${r.date}</div></div>
-        <span class="badge ${gradeBadge(r.score,r.total)}">${r.score}/${r.total}</span>
-      </div></div>`).join('')}`;
+    ${DB.results.length ? `<div class="card" style="margin-bottom:1rem">
+      <div class="card-title">O'rtacha ball</div>
+      <div class="progress-bar" style="margin:.5rem 0"><div class="progress-fill" style="width:${avg}%"></div></div>
+      <div style="font-size:1.3rem;font-weight:900;color:var(--accent)">${avg}%</div>
+    </div>` : ''}
+    <div class="page-title">So'nggi natijalar</div>
+    ${DB.results.length === 0 ? emptyHTML('📨',"Hozircha natija yo'q") :
+      [...DB.results].reverse().slice(0,10).map(r=>resultCardHTML(r)).join('')}
+  `;
 }
 
+// QUESTIONS
 function renderTQuestions() {
-  document.getElementById('t-questions').innerHTML = `
-    <div class="page-header">
-      <div class="page-title">Savol banki</div>
+  const el = document.getElementById('t-sec-questions');
+  el.innerHTML = `
+    <div class="flex" style="justify-content:space-between;margin-bottom:1rem">
+      <div class="page-title" style="margin:0">Savol banki (${DB.questions.length})</div>
       <button class="btn btn-primary btn-sm" onclick="openAddQ()">+ Savol qo'shish</button>
     </div>
-    ${DB.questions.length === 0 ? `<div class="empty-state"><div class="empty-icon">❓</div><div class="empty-text">Hozircha savol yo'q.<br>"Savol qo'shish" tugmasini bosing!</div></div>` :
-    DB.questions.map((q,i) => `
-      <div class="card">
-        <div class="flex">
-          <div class="flex-1">
-            <div class="q-num">#${i+1}${q.tag?' · '+q.tag:''}</div>
-            <div class="card-title">${q.text.substring(0,80)}${q.text.length>80?'...':''}</div>
+    ${!DB.questions.length ? emptyHTML('❓',"Hozircha savol yo'q.\n\"Savol qo'shish\" tugmasini bosing!") :
+      DB.questions.map((q,i) => `<div class="card">
+        <div class="card-row">
+          <div class="card-info">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--accent);margin-bottom:.25rem">#${i+1}${q.tag?' · '+esc(q.tag):''}</div>
+            <div class="card-title">${esc(q.text.substring(0,90))}${q.text.length>90?'...':''}</div>
             <div class="card-meta">${q.opts.length} variant · To'g'ri: <b>${'ABCD'[q.correct]}</b>${q.img?' · 🖼':''}</div>
           </div>
-          <div class="flex" style="flex-shrink:0">
+          <div class="card-actions">
             <button class="btn btn-ghost btn-sm" onclick="openEditQ('${q.id}')">✏️</button>
             <button class="btn btn-danger btn-sm" onclick="deleteQ('${q.id}')">🗑</button>
           </div>
         </div>
-      </div>`).join('')}`;
+      </div>`).join('')}
+  `;
 }
 
+// TESTS
 function renderTTests() {
-  document.getElementById('t-tests').innerHTML = `
-    <div class="page-header">
-      <div class="page-title">Testlar</div>
+  const el = document.getElementById('t-sec-tests');
+  el.innerHTML = `
+    <div class="flex" style="justify-content:space-between;margin-bottom:1rem">
+      <div class="page-title" style="margin:0">Testlar (${DB.tests.length})</div>
       <button class="btn btn-primary btn-sm" onclick="openCreateTest()">+ Test yaratish</button>
     </div>
-    ${DB.tests.length === 0 ? `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">Hozircha test yo'q</div></div>` :
-    DB.tests.map(t => {
-      const attempts = DB.results.filter(r => r.testId === t.id).length;
-      return `<div class="card">
-        <div class="flex">
-          <div class="flex-1">
-            <div class="card-title">${t.title}</div>
-            <div class="card-meta">${t.qids.length} savol${t.time?' · ⏱ '+t.time+' daqiqa':''} · ${attempts} ta urinish</div>
+    ${!DB.tests.length ? emptyHTML('📋',"Hozircha test yo'q") :
+      DB.tests.map(t => {
+        const att = DB.results.filter(r=>r.testId===t.id&&r.type!=='daily').length;
+        return `<div class="card"><div class="card-row">
+          <div class="card-info">
+            <div class="card-title">${esc(t.title)}</div>
+            <div class="card-meta">${t.qids.length} savol${t.time?` · ⏱ ${t.time} daqiqa`:''} · ${att} ta urinish</div>
+            <div style="margin-top:.4rem">
+              ${t.isUniversal ? `<span class="badge badge-blue">🌍 Umumiy</span>` : (t.grades||[]).map(g=>`<span class="badge badge-blue" style="margin-right:.3rem">${esc(g)}</span>`).join('')}
+            </div>
           </div>
           <button class="btn btn-danger btn-sm" onclick="deleteTest('${t.id}')">🗑</button>
-        </div>
-      </div>`;}).join('')}`;
+        </div></div>`;
+      }).join('')}
+  `;
 }
 
+// DAILY
 function renderTDaily() {
-  const dt = DB.dailyTask;
-  document.getElementById('t-daily').innerHTML = `
-    <div class="page-title" style="margin-bottom:1rem">Kunlik topshiriq</div>
-    
-    <div class="card">
-      <div class="card-title" style="margin-bottom:.75rem">📌 Hozirgi kunlik topshiriq</div>
-      ${dt && dt.qids && dt.qids.length
-        ? `<div style="font-weight:800">${dt.title||'Kunlik mashq'}</div>
-           <div class="card-meta">${dt.qids.length} ta savol</div>`
-        : `<div class="text-muted">Hozircha kunlik topshiriq belgilanmagan</div>`}
+  const el = document.getElementById('t-sec-daily');
+  el.innerHTML = `
+    <div class="flex" style="justify-content:space-between;margin-bottom:1rem">
+      <div class="page-title" style="margin:0">Kunlik topshiriqlar (${DB.dailyTasks.length})</div>
+      <button class="btn btn-primary btn-sm" onclick="openCreateDaily()">+ Qo'shish</button>
     </div>
-
-    <div class="card">
-      <div class="card-title" style="margin-bottom:1rem">✏️ Yangi kunlik topshiriq belgilash</div>
-      <div class="field">
-        <label>Topshiriq nomi</label>
-        <input type="text" id="dt-title" value="${dt ? (dt.title||'') : ''}" placeholder="Masalan: Bugungi arifmetika">
-      </div>
-      <div class="field">
-        <label>Savollarni tanlang</label>
-        ${DB.questions.length === 0
-          ? `<p class="text-muted" style="font-size:.85rem">Avval savol baniga savol qo'shing!</p>`
-          : `<div class="q-picker" id="dt-picker">${DB.questions.map(q=>`
-              <div class="q-picker-item ${dt&&dt.qids&&dt.qids.includes(q.id)?'picked':''}" id="dtp_${q.id}" onclick="toggleDTPick('${q.id}')">
-                <div class="pick-check">${dt&&dt.qids&&dt.qids.includes(q.id)?'✓':''}</div>
-                <div><div class="q-picker-text">${q.text.substring(0,70)}</div><div class="q-picker-tag">${q.tag||'Umumiy'}</div></div>
-              </div>`).join('')}</div>`}
-      </div>
-      <button class="btn btn-primary" onclick="saveDailyTask()">✓ Kunlik topshiriqni saqlash</button>
-    </div>`;
+    ${!DB.dailyTasks.length ? emptyHTML('📅',"Hozircha kunlik topshiriq yo'q") :
+      DB.dailyTasks.map(dt => `<div class="card"><div class="card-row">
+        <div class="card-info">
+          <div class="card-title">${esc(dt.title)}</div>
+          <div class="card-meta">${dt.qids.length} savol</div>
+          <div style="margin-top:.4rem">
+            ${dt.isUniversal ? `<span class="badge badge-blue">🌍 Umumiy</span>` : (dt.grades||[]).map(g=>`<span class="badge badge-blue" style="margin-right:.3rem">${esc(g)}</span>`).join('')}
+          </div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="deleteDaily('${dt.id}')">🗑</button>
+      </div></div>`).join('')}
+  `;
 }
 
-function toggleDTPick(id) {
-  const el = document.getElementById('dtp_' + id);
-  const isPicked = el.classList.toggle('picked');
-  el.querySelector('.pick-check').textContent = isPicked ? '✓' : '';
+// CODES
+function renderTCodes() {
+  const el = document.getElementById('t-sec-codes');
+  el.innerHTML = `
+    <div class="flex" style="justify-content:space-between;margin-bottom:.75rem">
+      <div class="page-title" style="margin:0">Sinf kodlari</div>
+      <button class="btn btn-primary btn-sm" onclick="openAddCode()">+ Kod qo'shish</button>
+    </div>
+    <p class="muted" style="margin-bottom:1rem;font-size:.82rem">O'quvchilar kirish paytida ushbu kodni kiritadi. Har bir sinf yoki guruh uchun alohida kod yaratishingiz mumkin.</p>
+    ${!DB.classCodes.length ? emptyHTML('🔑',"Hozircha kod yo'q") :
+      DB.classCodes.map(cc => `<div class="card"><div class="card-row">
+        <div class="card-info">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--accent)">${esc(cc.code)}</div>
+          <div style="margin-top:.4rem">
+            ${cc.isUniversal ? `<span class="badge badge-blue">🌍 Umumiy</span>` : (cc.grades||[]).map(g=>`<span class="badge badge-blue" style="margin-right:.3rem">${esc(g)}</span>`).join('')}
+          </div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="deleteCode('${esc(cc.code)}')">🗑</button>
+      </div></div>`).join('')}
+  `;
 }
 
-function saveDailyTask() {
-  const title = document.getElementById('dt-title').value.trim() || 'Kunlik mashq';
-  const picked = [...document.querySelectorAll('#dt-picker .q-picker-item.picked')].map(el => el.id.replace('dtp_',''));
-  if (!picked.length) { toast("Kamida 1 ta savol tanlang", 'err'); return; }
-  DB.dailyTask = { title, qids: picked };
-  dbSave();
-  toast("Kunlik topshiriq saqlandi! ✓", 'ok');
-  renderTDaily();
-}
+// RESULTS
+let rGradeFilter = 'all';
+let rTestFilter = 'all';
+let rViewMode = 'list';
 
 function renderTResults() {
-  document.getElementById('t-results').innerHTML = `
-    <div class="page-header">
-      <div class="page-title">Natijalar</div>
+  const el = document.getElementById('t-sec-results');
+  const allGrades = [...new Set(DB.results.map(r=>r.grade))].filter(Boolean).sort();
+  const allTests = [...new Set(DB.results.map(r=>r.testId))].filter(Boolean);
+
+  const filtered = DB.results.filter(r =>
+    (rGradeFilter==='all' || r.grade===rGradeFilter) &&
+    (rTestFilter==='all' || r.testId===rTestFilter)
+  );
+
+  let leaderboard = [];
+  if (rViewMode==='leaderboard') {
+    const best = {};
+    filtered.forEach(r => {
+      const key = r.student+'_'+r.testId;
+      if (!best[key] || r.score/r.total > best[key].score/best[key].total) best[key] = r;
+    });
+    leaderboard = Object.values(best).sort((a,b)=>b.score/b.total-a.score/a.total);
+  }
+
+  el.innerHTML = `
+    <div class="flex" style="justify-content:space-between;margin-bottom:1rem;flex-wrap:nowrap">
+      <div class="page-title" style="margin:0">Natijalar</div>
       <div class="flex">
         <button class="btn btn-ghost btn-sm" onclick="exportCSV()">⬇ CSV</button>
-        <button class="btn btn-danger btn-sm" onclick="if(confirm("Barcha natijalar o'chirilsinmi?")){DB.results=[];dbSave();renderTResults();}">🗑 Tozalash</button>
+        <button class="btn btn-danger btn-sm" onclick="clearResults()">🗑</button>
       </div>
     </div>
-    ${DB.results.length === 0 ? `<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">Hozircha natija yo'q</div></div>` :
-    [...DB.results].reverse().map(r => {
-      const pct = Math.round(r.score/r.total*100);
-      return `<div class="card"><div class="flex">
-        <div class="flex-1">
-          <div class="card-title">${r.student}${r.grade ? ` <span class="badge badge-blue">${r.grade}</span>` : ''}</div>
-          <div class="card-meta">${r.title} · ${r.date} · <span class="badge badge-blue">${r.type==='daily'?'Kunlik':'Test'}</span></div>
-        </div>
-        <div style="text-align:right;flex-shrink:0">
-          <div style="font-weight:900">${r.score}/${r.total}</div>
-          <span class="badge ${gradeBadge(r.score,r.total)}">${pct}%</span>
-        </div>
-      </div></div>`;}).join('')}`;
+
+    <div style="margin-bottom:.75rem">
+      <div style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem">Sinf bo'yicha</div>
+      <div class="filter-row">
+        <button class="filter-btn${rGradeFilter==='all'?' active':''}" onclick="rGradeFilter='all';renderTResults()">Hammasi</button>
+        ${allGrades.map(g=>`<button class="filter-btn${rGradeFilter===g?' active':''}" onclick="rGradeFilter='${g}';renderTResults()">${esc(g)}</button>`).join('')}
+      </div>
+    </div>
+
+    <div style="margin-bottom:.75rem">
+      <div style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem">Test bo'yicha</div>
+      <div class="filter-row">
+        <button class="filter-btn${rTestFilter==='all'?' active':''}" onclick="rTestFilter='all';renderTResults()">Hammasi</button>
+        ${allTests.map(tid=>{
+          const r=DB.results.find(x=>x.testId===tid);
+          return `<button class="filter-btn${rTestFilter===tid?' active':''}" onclick="rTestFilter='${tid}';renderTResults()">${r?esc(r.title):tid}</button>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="flex" style="margin-bottom:1rem">
+      <button class="filter-btn${rViewMode==='list'?' active':''}" onclick="rViewMode='list';renderTResults()">📋 Ro'yxat</button>
+      <button class="filter-btn${rViewMode==='leaderboard'?' active':''}" onclick="rViewMode='leaderboard';renderTResults()">🏆 Reyting</button>
+    </div>
+    <div class="muted" style="margin-bottom:.75rem">${filtered.length} ta natija</div>
+
+    ${rViewMode==='leaderboard' ? (
+      !leaderboard.length ? emptyHTML('🏆',"Natija yo'q") :
+      leaderboard.map((r,i)=>{
+        const pct=Math.round(r.score/r.total*100);
+        const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+        return `<div class="lb-card${i<3?' top3':''}">
+          ${medal?`<div class="lb-medal">${medal}</div>`:`<div class="lb-rank">${i+1}.</div>`}
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:800">${esc(r.student)} <span class="badge badge-blue">${esc(r.grade)}</span></div>
+            <div class="muted" style="font-size:.78rem">${esc(r.title)}</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-weight:900">${r.score}/${r.total}</div>
+            <span class="badge ${gradeBadge(r.score,r.total)}">${pct}%</span>
+          </div>
+        </div>`;
+      }).join('')
+    ) : (
+      !filtered.length ? emptyHTML('📊',"Natija yo'q") :
+      [...filtered].reverse().map(r=>resultCardHTML(r)).join('')
+    )}
+  `;
 }
 
+function clearResults() {
+  if (!confirm("Barcha natijalar o'chirilsinmi?")) return;
+  DB.results = []; dbSave(); renderTResults(); toast("Tozalandi");
+}
+
+function exportCSV() {
+  if (!DB.results.length) { toast("Natija yo'q", 'err'); return; }
+  const bom = '\uFEFF';
+  const header = "O'quvchi,Sinf,Topshiriq,Tur,Ball,Jami,Foiz,Sana\n";
+  const rows = DB.results.map(r => `"${r.student}","${r.grade}","${r.title}","${r.type}",${r.score},${r.total},${Math.round(r.score/r.total*100)}%,"${r.date}"`).join('\n');
+  const blob = new Blob([bom+header+rows],{type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='mathclass_natijalar.csv'; a.click();
+}
+
+// SETTINGS
 function renderTSettings() {
-  document.getElementById('t-settings').innerHTML = `
-    <div class="page-title" style="margin-bottom:1rem">Sozlamalar</div>
-    
-    <div class="card" style="border-color:var(--green);background:rgba(34,211,160,.05);margin-bottom:1rem">
-      <div class="card-title" style="color:var(--green);margin-bottom:.5rem">🤖 Telegram orqali natijalar olish</div>
-      <p style="font-size:.82rem;color:var(--muted2);line-height:1.7">
-        1. Telegramda <b>@BotFather</b> ni oching → <b>/newbot</b> yuboring → <b>Token</b> oling<br>
-        2. Botingizga xabar yuboring, so'ng:<br>
-        <span style="font-family:var(--mono);font-size:.75rem;color:var(--accent)">https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</span><br>
-        manzilidan <b>Chat ID</b> ni toping<br>
-        3. Quyida ikkalasini kiriting va saqlang
-      </p>
+  const s = DB.settings;
+  document.getElementById('t-sec-settings').innerHTML = `
+    <div class="page-title">Sozlamalar</div>
+
+    <div class="green-info">
+      <div class="green-info-title">🤖 Telegram sozlash</div>
+      <p>1. Telegramda <b>@BotFather</b> → <b>/newbot</b> → Token oling<br>
+      2. Botingizga xabar yuboring<br>
+      3. <span class="mono">https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</span><br>
+      manzilidan Chat ID toping (raqam)</p>
+    </div>
+
+    <div class="card" style="margin-bottom:.75rem">
+      <div class="field"><label>Telegram Bot Token</label><input type="text" id="set-token" value="${esc(s.token||'')}" placeholder="123456789:ABCdef..."></div>
+      <div class="field"><label>Telegram Chat ID</label><input type="text" id="set-chatid" value="${esc(s.chatId||'')}" placeholder="123456789"></div>
+      <div class="field"><label>Yangi parol (bo'sh qoldirsangiz o'zgarmaydi)</label><input type="password" id="set-pass" placeholder="Yangi parol"></div>
+      <div class="flex" style="flex-wrap:wrap">
+        <button class="btn btn-primary" style="flex:1" onclick="saveSettings()">✓ Saqlash</button>
+        <button class="btn btn-ghost" onclick="testTelegram()">📬 Sinab ko'rish</button>
+      </div>
     </div>
 
     <div class="card">
-      <div class="field"><label>Telegram Bot Token</label><input type="text" id="set-token" value="${DB.settings.token||''}" placeholder="123456789:ABCdef..."></div>
-      <div class="field"><label>Telegram Chat ID</label><input type="text" id="set-chatid" value="${DB.settings.chatId||''}" placeholder="123456789"></div>
-      <div class="field"><label>Sinf kodi (o'quvchilar uchun)</label><input type="text" id="set-code" value="${DB.settings.classCode||'sinf2024'}"></div>
-      <div class="field"><label>Yangi parol (bo'sh qoldirsangiz o'zgarmaydi)</label><input type="password" id="set-pass" placeholder="Yangi parol"></div>
-      <div class="flex" style="gap:.75rem;margin-top:.5rem">
-        <button class="btn btn-primary" onclick="saveSettings()">✓ Saqlash</button>
-        <button class="btn btn-ghost" onclick="testTG()">📬 Sinab ko'rish</button>
+      <div style="font-weight:800;margin-bottom:.85rem">🎨 Mavzu tanlash</div>
+      <div class="flex">
+        ${Object.entries(THEMES).map(([k,v])=>`
+          <button onclick="applyTheme('${k}')" title="${v.label}"
+            style="display:flex;align-items:center;gap:.4rem;padding:.35rem .75rem;border-radius:8px;border:2px solid ${DB.settings.theme===k?'var(--accent)':'var(--border)'};background:${DB.settings.theme===k?'var(--accent)':'var(--surface2)'};color:${DB.settings.theme===k?'#000':'var(--muted)'};font-weight:800;font-size:.78rem;cursor:pointer;margin-bottom:.4rem">
+            <span style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,${v.bg},${v.accent});flex-shrink:0;display:inline-block"></span>${v.label}
+          </button>`).join('')}
       </div>
     </div>
-
-    <div class="card" style="margin-top:.5rem">
-      <div class="card-title" style="margin-bottom:.75rem">🎨 Mavzu tanlash</div>
-      <div class="theme-row" style="justify-content:flex-start">
-        <div class="theme-dot" data-t="default" onclick="setTheme('default',this)" title="Ko'k"></div>
-        <div class="theme-dot" data-t="ocean" onclick="setTheme('ocean',this)" title="Okean"></div>
-        <div class="theme-dot" data-t="forest" onclick="setTheme('forest',this)" title="O'rmon"></div>
-        <div class="theme-dot" data-t="sunset" onclick="setTheme('sunset',this)" title="Quyosh botishi"></div>
-        <div class="theme-dot" data-t="lavender" onclick="setTheme('lavender',this)" title="Binafsha"></div>
-        <div class="theme-dot" data-t="light" onclick="setTheme('light',this)" title="Yorug'lik"></div>
-      </div>
-    </div>`;
-  
-  // Reapply current theme dot active state
-  const t = DB.settings.theme || 'default';
-  document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
-  document.querySelectorAll(`.theme-dot[data-t="${t}"]`).forEach(d => d.classList.add('active'));
+  `;
 }
 
-function saveSettings() {
-  DB.settings.token = document.getElementById('set-token').value.trim();
-  DB.settings.chatId = document.getElementById('set-chatid').value.trim();
-  DB.settings.classCode = document.getElementById('set-code').value.trim() || 'sinf2024';
+async function saveSettings() {
+  const token = document.getElementById('set-token').value.trim();
+  const chatId = document.getElementById('set-chatid').value.trim();
   const np = document.getElementById('set-pass').value;
+  DB.settings.token = token;
+  DB.settings.chatId = chatId;
   if (np) DB.settings.pass = np;
   dbSave();
-  toast("Sozlamalar saqlandi ✓", 'ok');
+  toast("Saqlandi ✓");
+  renderTSettings();
 }
 
-async function testTG() {
-  const ok = await sendTGMsg("✅ MathClass boti ulandi! O'quvchilar natijalari shu yerga keladi.");
-  toast(ok ? "Telegram xabar yuborildi! ✓" : "Telegram xatolik. Token va Chat ID ni tekshiring.", ok?'ok':'err');
+async function testTelegram() {
+  const {token,chatId} = DB.settings;
+  if (!token||!chatId) { toast("Token va Chat ID kiriting","err"); return; }
+  try {
+    const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,text:"✅ MathClass boti ulandi! Natijalar shu yerga keladi.",parse_mode:'HTML'})});
+    const d = await r.json();
+    toast(d.ok?"Telegram xabar yuborildi ✓":"Telegram xatolik — tokenni tekshiring", d.ok?'ok':'err');
+  } catch { toast("Telegram xatolik", 'err'); }
 }
 
-// ════════════════════════════
+// ═══════════════════════════════════════════════════════
 // QUESTION WIZARD
-// ════════════════════════════
+// ═══════════════════════════════════════════════════════
 let editingQId = null;
-let imgData = null;
-let qwizStep = 1;
+let qImgData = null;
+let qCurrentStep = 1;
 
 function openAddQ() {
-  editingQId = null; imgData = null;
-  document.getElementById('mq-text').value = '';
-  document.getElementById('mq-tag').value = '';
-  document.getElementById('mq-img-file').value = '';
-  document.getElementById('mq-img-preview').style.display = 'none';
-  document.getElementById('mq-title-label').textContent = 'Yangi savol qo\'shish';
-  buildOptRows([{t:'',c:false},{t:'',c:false},{t:'',c:false},{t:'',c:false}]);
-  qwizGo(1);
-  openOv('ov-question');
+  editingQId = null; qImgData = null;
+  document.getElementById('qd-title').textContent = "Yangi savol qo'shish";
+  document.getElementById('qd-text').value = '';
+  document.getElementById('qd-tag').value = '';
+  document.getElementById('qd-img-file').value = '';
+  document.getElementById('qd-img-preview').style.display = 'none';
+  buildOptRows([{v:'',c:false},{v:'',c:false},{v:'',c:false},{v:'',c:false}]);
+  qStep(1);
+  openOv('ov-q');
 }
 
 function openEditQ(id) {
-  const q = DB.questions.find(x => x.id === id);
+  const q = DB.questions.find(x=>x.id===id);
   if (!q) return;
-  editingQId = id; imgData = q.img || null;
-  document.getElementById('mq-text').value = q.text;
-  document.getElementById('mq-tag').value = q.tag || '';
-  document.getElementById('mq-title-label').textContent = 'Savol tahrirlash';
-  if (q.img) { const p = document.getElementById('mq-img-preview'); p.src = q.img; p.style.display='block'; }
-  else document.getElementById('mq-img-preview').style.display = 'none';
-  buildOptRows(q.opts.map((t,i) => ({t, c: i===q.correct})));
-  qwizGo(1);
-  openOv('ov-question');
+  editingQId = id; qImgData = q.img||null;
+  document.getElementById('qd-title').textContent = "Savolni tahrirlash";
+  document.getElementById('qd-text').value = q.text;
+  document.getElementById('qd-tag').value = q.tag||'';
+  document.getElementById('qd-img-file').value = '';
+  const prev = document.getElementById('qd-img-preview');
+  if (q.img) { prev.src=q.img; prev.style.display='block'; } else prev.style.display='none';
+  buildOptRows(q.opts.map((v,i)=>({v,c:i===q.correct})));
+  qStep(1);
+  openOv('ov-q');
 }
 
 function buildOptRows(opts) {
-  const c = document.getElementById('mq-opts');
-  c.innerHTML = '';
-  opts.forEach((o,i) => addOptRowWith(o.t, o.c));
+  const cont = document.getElementById('qd-opts-container');
+  cont.innerHTML = '';
+  opts.forEach(o => _addOptRow(o.v, o.c));
 }
 
-function addOptRow() {
-  addOptRowWith('', false);
-}
+function addOptRow() { _addOptRow('', false); }
 
-function addOptRowWith(val, isCorrect) {
-  const c = document.getElementById('mq-opts');
-  const idx = c.children.length;
+function _addOptRow(val, isCorrect) {
+  const cont = document.getElementById('qd-opts-container');
+  const idx = cont.children.length;
   const div = document.createElement('div');
-  div.className = 'option-edit-row' + (isCorrect ? ' is-correct' : '');
+  div.className = 'opt-edit-row' + (isCorrect?' is-correct':'');
   div.innerHTML = `
-    <span style="font-family:var(--mono);font-size:.8rem;color:var(--muted2);min-width:1.2rem">${'ABCD'[idx]||idx}</span>
-    <input class="option-edit-input" placeholder="Variant ${idx+1}" value="${val.replace(/"/g,'&quot;')}">
-    <button type="button" class="correct-toggle${isCorrect?' active':''}" onclick="markCorrect(this)" title="To'g'ri javob">✓</button>
-    <button type="button" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:.2rem" onclick="this.parentElement.remove()">✕</button>`;
-  c.appendChild(div);
+    <span style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--muted);min-width:1.2rem;flex-shrink:0">${'ABCD'[idx]||idx}</span>
+    <input class="opt-edit-input" placeholder="Variant ${idx+1}" value="${esc(val)}">
+    <button type="button" class="correct-btn${isCorrect?' active':''}" onclick="markCorrect(this)" title="To'g'ri javob">✓</button>
+    <button type="button" class="remove-btn" onclick="this.parentElement.remove()">✕</button>`;
+  cont.appendChild(div);
 }
 
 function markCorrect(btn) {
-  document.querySelectorAll('#mq-opts .correct-toggle').forEach(b => { b.classList.remove('active'); b.closest('.option-edit-row').classList.remove('is-correct'); });
+  document.querySelectorAll('.opt-edit-row').forEach(row => {
+    row.classList.remove('is-correct');
+    row.querySelector('.correct-btn').classList.remove('active');
+  });
   btn.classList.add('active');
-  btn.closest('.option-edit-row').classList.add('is-correct');
+  btn.closest('.opt-edit-row').classList.add('is-correct');
 }
 
-function qwizNext(step) { qwizGo(step); }
-
-function qwizGo(step) {
-  qwizStep = step;
-  document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
-  document.getElementById('qwiz-'+step).classList.add('active');
-  for(let i=1;i<=3;i++) {
-    const dot = document.getElementById('qstep-'+i);
-    dot.classList.toggle('done', i <= step);
-  }
+function qStep(step) {
+  qCurrentStep = step;
+  ['qd-step1','qd-step2','qd-step3'].forEach((id,i) => {
+    document.getElementById(id).style.display = i+1===step ? '' : 'none';
+  });
+  const dots = document.getElementById('qd-steps');
+  dots.innerHTML = [1,2,3].map(i => `<div class="step-dot${i<=step?' done':''}"></div>`).join('');
   if (step === 3) buildQPreview();
 }
 
 function buildQPreview() {
-  const text = document.getElementById('mq-text').value.trim() || '(Matn kiritilmagan)';
-  const rows = [...document.querySelectorAll('#mq-opts .option-edit-row')];
-  const opts = rows.map(r => r.querySelector('.option-edit-input').value.trim());
-  const correctIdx = rows.findIndex(r => r.querySelector('.correct-toggle').classList.contains('active'));
-  
-  document.getElementById('mq-preview').innerHTML = `
-    <div class="q-text" style="margin-bottom:.75rem">${text}</div>
-    ${imgData ? `<img src="${imgData}" style="max-width:100%;border-radius:8px;margin-bottom:.75rem">` : ''}
-    <div class="options-grid">
-      ${opts.map((o,i) => `<div style="display:flex;gap:.5rem;align-items:center;padding:.5rem;border-radius:8px;background:${i===correctIdx?'rgba(34,211,160,.15)':'var(--bg)'};border:2px solid ${i===correctIdx?'var(--green)':'var(--border)'}">
-        <span style="font-weight:800;font-family:var(--mono)">${'ABCD'[i]}</span>
-        <span>${o||'(bo\'sh)'}</span>
-        ${i===correctIdx?'<span style="margin-left:auto;color:var(--green)">✓</span>':''}
-      </div>`).join('')}
-    </div>`;
+  const text = document.getElementById('qd-text').value.trim() || '(Matn kiritilmagan)';
+  const rows = [...document.querySelectorAll('.opt-edit-row')];
+  const opts = rows.map(r => r.querySelector('.opt-edit-input').value.trim());
+  const correctIdx = rows.findIndex(r => r.querySelector('.correct-btn').classList.contains('active'));
+  document.getElementById('qd-preview').innerHTML = `
+    <div style="font-weight:700;margin-bottom:.75rem;line-height:1.5">${esc(text)}</div>
+    ${qImgData ? `<img src="${qImgData}" style="max-width:100%;border-radius:8px;margin-bottom:.75rem">` : ''}
+    ${opts.map((o,i) => `<div style="display:flex;gap:.5rem;align-items:center;padding:.5rem;border-radius:8px;margin-bottom:.4rem;background:${i===correctIdx?'rgba(34,211,160,.15)':'var(--bg)'};border:2px solid ${i===correctIdx?'var(--green)':'var(--border)'}">
+      <span style="font-weight:800;font-family:'JetBrains Mono',monospace">${'ABCD'[i]}</span>
+      <span style="flex:1">${esc(o)||'(bo\'sh)'}</span>
+      ${i===correctIdx?'<span style="color:var(--green)">✓</span>':''}
+    </div>`).join('')}`;
 }
 
 function saveQuestion() {
-  const text = document.getElementById('mq-text').value.trim();
-  if (!text) { toast("Savol matni kiriting", 'err'); qwizGo(1); return; }
-  const rows = [...document.querySelectorAll('#mq-opts .option-edit-row')];
-  const opts = rows.map(r => r.querySelector('.option-edit-input').value.trim()).filter(Boolean);
-  if (opts.length < 2) { toast("Kamida 2 ta variant kiriting", 'err'); qwizGo(2); return; }
-  const correctRow = rows.find(r => r.querySelector('.correct-toggle').classList.contains('active'));
-  const correctOpt = correctRow ? correctRow.querySelector('.option-edit-input').value.trim() : '';
-  const correct = opts.indexOf(correctOpt);
-  if (correct === -1) { toast("To'g'ri javobni belgilang", 'err'); qwizGo(2); return; }
-  
+  const text = document.getElementById('qd-text').value.trim();
+  if (!text) { toast("Savol matni kiriting", 'err'); qStep(1); return; }
+  const rows = [...document.querySelectorAll('.opt-edit-row')];
+  const opts = rows.map(r => r.querySelector('.opt-edit-input').value.trim()).filter(Boolean);
+  if (opts.length < 2) { toast("Kamida 2 ta variant kiriting", 'err'); qStep(2); return; }
+  const correctRow = rows.find(r => r.querySelector('.correct-btn').classList.contains('active'));
+  const correctVal = correctRow ? correctRow.querySelector('.opt-edit-input').value.trim() : '';
+  const correct = opts.indexOf(correctVal);
+  if (correct === -1) { toast("To'g'ri javobni belgilang", 'err'); qStep(2); return; }
   const q = {
     id: editingQId || Date.now()+'',
     text, opts, correct,
-    img: imgData || null,
-    tag: document.getElementById('mq-tag').value.trim()
+    img: qImgData || null,
+    tag: document.getElementById('qd-tag').value.trim()
   };
   if (editingQId) {
-    const i = DB.questions.findIndex(x => x.id === editingQId);
+    const i = DB.questions.findIndex(x=>x.id===editingQId);
     DB.questions[i] = q;
   } else {
     DB.questions.push(q);
   }
   dbSave();
-  closeOv('ov-question');
-  toast("Savol saqlandi ✓", 'ok');
+  closeOv('ov-q');
+  toast("Savol saqlandi ✓");
   renderTQuestions();
 }
 
 function deleteQ(id) {
   if (!confirm("Savol o'chirilsinmi?")) return;
-  DB.questions = DB.questions.filter(q => q.id !== id);
-  DB.tests.forEach(t => t.qids = t.qids.filter(qid => qid !== id));
-  if (DB.dailyTask) DB.dailyTask.qids = (DB.dailyTask.qids||[]).filter(qid => qid !== id);
-  dbSave();
-  toast("O'chirildi", 'ok');
-  renderTQuestions();
+  DB.questions = DB.questions.filter(q=>q.id!==id);
+  DB.tests.forEach(t=>t.qids=t.qids.filter(qid=>qid!==id));
+  DB.dailyTasks.forEach(d=>d.qids=d.qids.filter(qid=>qid!==id));
+  dbSave(); renderTQuestions(); toast("O'chirildi");
 }
 
 // Image upload
-document.getElementById('mq-img-file').addEventListener('change', function() {
-  if (!this.files[0]) return;
+document.getElementById('qd-img-file').addEventListener('change', function() {
+  const f = this.files[0]; if (!f) return;
   const r = new FileReader();
   r.onload = e => {
-    imgData = e.target.result;
-    const p = document.getElementById('mq-img-preview');
-    p.src = e.target.result; p.style.display = 'block';
+    qImgData = e.target.result;
+    const prev = document.getElementById('qd-img-preview');
+    prev.src = e.target.result; prev.style.display = 'block';
   };
-  r.readAsDataURL(this.files[0]);
+  r.readAsDataURL(f);
 });
 
-// ════════════════════════════
+// ═══════════════════════════════════════════════════════
 // TEST CRUD
-// ════════════════════════════
+// ═══════════════════════════════════════════════════════
 function openCreateTest() {
-  const picker = document.getElementById('mt-qpicker');
-  picker.innerHTML = DB.questions.length === 0
-    ? `<div style="padding:1rem;color:var(--muted2);font-size:.85rem">Avval savol qo'shing</div>`
-    : DB.questions.map(q => `
-        <div class="q-picker-item" id="mtp_${q.id}" onclick="toggleMTP('${q.id}')">
-          <div class="pick-check"></div>
-          <div><div class="q-picker-text">${q.text.substring(0,70)}</div><div class="q-picker-tag">${q.tag||'Umumiy'} · To'g'ri: ${'ABCD'[q.correct]}</div></div>
-        </div>`).join('');
-  document.getElementById('mt-name').value = '';
-  document.getElementById('mt-time').value = '0';
+  document.getElementById('td-name').value = '';
+  document.getElementById('td-time').value = '0';
+  setUniversal('td', true);
+  buildPicker('td-picker', []);
   openOv('ov-test');
 }
 
-function toggleMTP(id) {
-  const el = document.getElementById('mtp_' + id);
-  const p = el.classList.toggle('picked');
-  el.querySelector('.pick-check').textContent = p ? '✓' : '';
-}
-
 function saveTest() {
-  const title = document.getElementById('mt-name').value.trim();
+  const title = document.getElementById('td-name').value.trim();
   if (!title) { toast("Test nomini kiriting", 'err'); return; }
-  const time = parseInt(document.getElementById('mt-time').value) || 0;
-  const qids = [...document.querySelectorAll('#mt-qpicker .q-picker-item.picked')].map(el => el.id.replace('mtp_',''));
+  const time = parseInt(document.getElementById('td-time').value)||0;
+  const isUniversal = document.getElementById('td-univ-btn').classList.contains('active');
+  const grades = getChips('td');
+  const qids = getPickedIds('td-picker');
   if (!qids.length) { toast("Kamida 1 ta savol tanlang", 'err'); return; }
-  DB.tests.push({ id: Date.now()+'', title, qids, time });
-  dbSave();
-  closeOv('ov-test');
-  toast("Test yaratildi ✓", 'ok');
-  renderTTests();
+  DB.tests.push({id:Date.now()+'',title,qids,time,isUniversal,grades:isUniversal?[]:grades});
+  dbSave(); closeOv('ov-test'); renderTTests(); toast("Test yaratildi ✓");
 }
 
 function deleteTest(id) {
   if (!confirm("Test o'chirilsinmi?")) return;
-  DB.tests = DB.tests.filter(t => t.id !== id);
-  dbSave();
-  toast("O'chirildi", 'ok');
-  renderTTests();
+  DB.tests = DB.tests.filter(t=>t.id!==id);
+  dbSave(); renderTTests(); toast("O'chirildi");
 }
 
-// ════════════════════════════
-// TELEGRAM
-// ════════════════════════════
-async function sendTGMsg(text) {
-  const {token, chatId} = DB.settings;
-  if (!token || !chatId) return false;
-  try {
-    const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({chat_id: chatId, text, parse_mode:'HTML'})
-    });
-    const d = await r.json(); return d.ok;
-  } catch(e) { return false; }
+// ═══════════════════════════════════════════════════════
+// DAILY CRUD
+// ═══════════════════════════════════════════════════════
+function openCreateDaily() {
+  document.getElementById('dd-name').value = '';
+  setUniversal('dd', true);
+  buildPicker('dd-picker', []);
+  openOv('ov-daily');
 }
 
-function sendTG(res) {
-  const pct = Math.round(res.score/res.total*100);
-  const e = pct>=80?'⭐':pct>=60?'✅':'⚠️';
-  sendTGMsg(`${e} <b>Yangi natija!</b>\n\n👤 <b>O'quvchi:</b> ${res.student}\n🏫 <b>Sinf:</b> ${res.grade||'—'}\n📝 <b>Topshiriq:</b> ${res.title}\n🔢 <b>Ball:</b> ${res.score}/${res.total} (${pct}%)\n📅 <b>Sana:</b> ${res.date}\n🏷 <b>Tur:</b> ${res.type==='daily'?'Kunlik mashq':'Test'}`);
+function saveDaily() {
+  const title = document.getElementById('dd-name').value.trim();
+  if (!title) { toast("Nom kiriting", 'err'); return; }
+  const isUniversal = document.getElementById('dd-univ-btn').classList.contains('active');
+  const grades = getChips('dd');
+  const qids = getPickedIds('dd-picker');
+  if (!qids.length) { toast("Kamida 1 ta savol tanlang", 'err'); return; }
+  DB.dailyTasks.push({id:Date.now()+'',title,qids,isUniversal,grades:isUniversal?[]:grades});
+  dbSave(); closeOv('ov-daily'); renderTDaily(); toast("Saqlandi ✓");
 }
 
-// ════════════════════════════
-// EXPORT CSV
-// ════════════════════════════
-function exportCSV() {
-  if (!DB.results.length) { toast("Natija yo'q", 'err'); return; }
-  const bom = '\uFEFF';
-  const h = 'O\'quvchi,Sinf,Topshiriq,Tur,Ball,Jami,Foiz,Sana\n';
-  const rows = DB.results.map(r => `"${r.student}","${r.grade||''}","${r.title}","${r.type}",${r.score},${r.total},${Math.round(r.score/r.total*100)}%,"${r.date}"`).join('\n');
-  const blob = new Blob([bom+h+rows], {type:'text/csv;charset=utf-8'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'mathclass_natijalar.csv'; a.click();
+function deleteDaily(id) {
+  if (!confirm("O'chirilsinmi?")) return;
+  DB.dailyTasks = DB.dailyTasks.filter(d=>d.id!==id);
+  dbSave(); renderTDaily(); toast("O'chirildi");
 }
 
-// ════════════════════════════
-// MODAL
-// ════════════════════════════
-function openOv(id) { document.getElementById(id).classList.add('open'); }
-function closeOv(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.overlay').forEach(ov => {
-  ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('open'); });
-});
-
-// ════════════════════════════
-// TOAST
-// ════════════════════════════
-let toastT;
-function toast(msg, type='') {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.className = 'toast show ' + type;
-  clearTimeout(toastT);
-  toastT = setTimeout(() => el.classList.remove('show'), 3000);
+// ═══════════════════════════════════════════════════════
+// CLASS CODES CRUD
+// ═══════════════════════════════════════════════════════
+function openAddCode() {
+  document.getElementById('cd-code').value = '';
+  setUniversal('cd', true);
+  openOv('ov-code');
 }
 
-// ════════════════════════════
-// UTILS
-// ════════════════════════════
-function gradeBadge(s, t) {
-  const p = s/t;
-  return p >= .8 ? 'badge-green' : p >= .5 ? 'badge-yellow' : 'badge-red';
+function saveCode() {
+  const code = document.getElementById('cd-code').value.trim();
+  if (!code) { toast("Kod kiriting", 'err'); return; }
+  if (DB.classCodes.find(c=>c.code===code)) { toast("Bu kod allaqachon mavjud", 'err'); return; }
+  const isUniversal = document.getElementById('cd-univ-btn').classList.contains('active');
+  const grades = getChips('cd');
+  DB.classCodes.push({code,isUniversal,grades:isUniversal?[]:grades});
+  dbSave(); closeOv('ov-code'); renderTCodes(); toast("Kod qo'shildi ✓");
 }
 
-// ════════════════════════════
-// CONFETTI
-// ════════════════════════════
-function launchConfetti() {
-  const canvas = document.getElementById('confetti');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-  const particles = Array.from({length:100}, () => ({
-    x: Math.random()*canvas.width, y: Math.random()*canvas.height - canvas.height,
-    r: Math.random()*6+4, d: Math.random()*100,
-    color: ['#38bdf8','#22d3a0','#fbbf24','#f87171','#a78bfa'][Math.floor(Math.random()*5)],
-    tilt: Math.random()*10-10, tiltAngle: 0, tiltAngleInc: Math.random()*.07+.05
-  }));
-  let frame = 0;
-  const tick = () => {
-    if (frame++ > 200) { ctx.clearRect(0,0,canvas.width,canvas.height); return; }
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particles.forEach(p => {
-      p.tiltAngle += p.tiltAngleInc; p.y += (Math.cos(p.d)+3+p.r/2)/2; p.tilt = Math.sin(p.tiltAngle)*15;
-      if (p.y > canvas.height) { p.y = -20; p.x = Math.random()*canvas.width; }
-      ctx.beginPath(); ctx.fillStyle = p.color; ctx.arc(p.x+p.tilt, p.y, p.r, 0, 2*Math.PI); ctx.fill();
-    });
-    requestAnimationFrame(tick);
-  };
-  tick();
+function deleteCode(code) {
+  if (!confirm("Kod o'chirilsinmi?")) return;
+  DB.classCodes = DB.classCodes.filter(c=>c.code!==code);
+  dbSave(); renderTCodes(); toast("O'chirildi");
 }
 
-// ════════════════════════════
-// DEMO DATA (first run)
-// ════════════════════════════
-if (!DB.questions.length) {
-  DB.questions = [
-    { id: 'q1', text: '7 × 8 nechiga teng?', opts: ['48','56','54','64'], correct: 1, img: null, tag: 'Arifmetika' },
-    { id: 'q2', text: '2x + 5 = 13 tenglamani yeching. x = ?', opts: ['3','4','5','6'], correct: 1, img: null, tag: 'Algebra' },
-    { id: 'q3', text: 'Radiusi 5 bo\'lgan aylana yuzini toping (π ≈ 3.14)', opts: ['78.5','31.4','15.7','25'], correct: 0, img: null, tag: 'Geometriya' },
-    { id: 'q4', text: '200 ning 15 foizi qancha?', opts: ['25','30','35','40'], correct: 1, img: null, tag: 'Foizlar' },
-    { id: 'q5', text: '144 ning kvadrat ildizi nechiga teng?', opts: ['11','12','13','14'], correct: 1, img: null, tag: 'Arifmetika' },
-  ];
-  DB.tests = [{ id: 't1', title: 'Boshlang\'ich test', qids: ['q1','q2','q3','q4','q5'], time: 10 }];
-  DB.dailyTask = { title: 'Bugungi isitish mashqi', qids: ['q1','q5'] };
-  dbSave();
+// ═══════════════════════════════════════════════════════
+// SHARED FORM HELPERS
+// ═══════════════════════════════════════════════════════
+// prefix: td | dd | cd
+function setUniversal(prefix, isUniv) {
+  document.getElementById(prefix+'-univ-btn').classList.toggle('active', isUniv);
+  document.getElementById(prefix+'-spec-btn').classList.toggle('active', !isUniv);
+  const wrap = document.getElementById(prefix+'-grades-wrap');
+  if (wrap) wrap.style.display = isUniv ? 'none' : '';
 }
+
+function addGradeChip(prefix) {
+  const inp = document.getElementById(prefix+'-grade-input');
+  const val = inp.value.trim().toUpperCase();
+  if (!val) return;
+  const chips = document.getElementById(prefix+'-chips');
+  const existing = [...chips.querySelectorAll('.chip')].map(c=>c.dataset.v);
+  if (existing.includes(val)) { inp.value=''; return; }
+  const chip = document.createElement('span');
+  chip.className = 'chip'; chip.dataset.v = val;
+  chip.innerHTML = `${val} <span class="chip-remove" onclick="this.parentElement.remove()">✕</span>`;
+  chips.appendChild(chip);
+  inp.value = '';
+}
+
+function getChips(prefix) {
+  return [...document.querySelectorAll(`#${prefix}-chips .chip`)].map(c=>c.dataset.v);
+}
+
+function buildPicker(containerId, selectedIds) {
+  const cont = document.getElementById(containerId);
+  if (!DB.questions.length) {
+    cont.innerHTML = '<div style="padding:.85rem 1rem;color:var(--muted);font-size:.85rem">Avval savol baniga savol qo\'shing!</div>';
+    return;
+  }
+  cont.innerHTML = DB.questions.map(q => `
+    <div class="picker-item${selectedIds.includes(q.id)?' picked':''}" id="pick_${containerId}_${q.id}" onclick="togglePick('${containerId}','${q.id}')">
+      <div class="pick-check">${selectedIds.includes(q.id)?'✓':''}</div>
+      <span class="picker-text">${esc(q.text.substring(0,70))}</span>
+      <span class="picker-tag">${esc(q.tag||'Umumiy')}</span>
+    </div>`).join('');
+}
+
+function togglePick(containerId, qid) {
+  const el = document.getElementById(`pick_${containerId}_${qid}`);
+  const isPicked = el.classList.toggle('picked');
+  el.querySelector('.pick-check').textContent = isPicked ? '✓' : '';
+}
+
+function getPickedIds(containerId) {
+  return [...document.querySelectorAll(`#${containerId} .picker-item.picked`)].map(el => {
+    return el.id.replace(`pick_${containerId}_`,'');
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// UTILITY HELPERS
+// ═══════════════════════════════════════════════════════
+function esc(str) {
+  if (!str && str!==0) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function gradeBadge(score, total) {
+  const p = score/total;
+  return p>=.8?'badge-green':p>=.5?'badge-yellow':'badge-red';
+}
+
+function emptyHTML(icon, text) {
+  return `<div class="empty"><div class="empty-icon">${icon}</div><div class="empty-text">${text.replace(/\n/g,'<br>')}</div></div>`;
+}
+
+function resultCardHTML(r) {
+  const pct = Math.round(r.score/r.total*100);
+  return `<div class="card"><div class="card-row">
+    <div class="card-info">
+      <div class="card-title">${esc(r.student)} <span class="badge badge-blue">${esc(r.grade)}</span></div>
+      <div class="card-meta">${esc(r.title)} · ${esc(r.date)}</div>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-weight:900">${r.score}/${r.total}</div>
+      <span class="badge ${gradeBadge(r.score,r.total)}">${pct}%</span>
+    </div>
+  </div></div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+applyTheme(DB.settings.theme || 'blue');
+buildThemeDots();
 </script>
 </body>
-</html>
+</html> 
